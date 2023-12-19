@@ -5,6 +5,12 @@ import { useState } from "react"
 
 export default function Page() {
     let [definitions, setDefinitions] = useState([])
+    let [alternateForms, setAlternateForms] = useState([])
+    let [similarWords, setSimilarWords] = useState([])
+    let [etymology, setEtymology] = useState([])
+    let [exampleSentences, setExampleSentences] = useState([])
+    let [grammaticallyRelatedWords, setGrammaticallyRelatedWords] = useState([])
+    let [grammarNotes, setGrammarNotes] = useState([])
 
     function submit(formData) {
         submitData(formData)
@@ -14,32 +20,100 @@ export default function Page() {
     function addDefinition(e) {
         e.preventDefault()
         let newDefinitions = []
-        const nextDefinitionNum = definitions.length / 2 + 1
+        const newDefinitionAmount = definitions.length / 2 + 1
 
-        newDefinitions.push(<label htmlFor={`'definition-${nextDefinitionNum}'`}>Definition {nextDefinitionNum}</label>)
-        newDefinitions.push(<input className='border-black border rounded' type='text' id='definition-1' name="definition-1"></input>)
+        newDefinitions.push(<label htmlFor={`'definition-${newDefinitionAmount}'`}>Definition {newDefinitionAmount}</label>)
+        newDefinitions.push(<input className='border-black border rounded' type='text' id={`'definition-${newDefinitionAmount}'`} name={`'definition-${newDefinitionAmount}'`}></input>)
 
         setDefinitions(definitions.concat(newDefinitions))
+    }
+
+    function addAlternateForm(e) {
+        e.preventDefault()
+        let newAlternateForms = []
+        const newAlternateFormAmount = alternateForms.length / 2 + 1
+
+        newAlternateForms.push(<label htmlFor={`'alternate-form-${newAlternateFormAmount}'`}>Alternate Form {newAlternateFormAmount}</label>)
+        newAlternateForms.push(<input className='border-black border rounded' type='text' id={`'alternate-form-${newAlternateFormAmount}'`} name={`'alternate-form-${newAlternateFormAmount}'`}></input>)
+
+        setAlternateForms(alternateForms.concat(newAlternateForms))
+    }
+
+    function addSimilarWord(e) {
+        e.preventDefault()
+        let newSimilarWords = []
+        const newSimilarWordAmount = similarWords.length / 2 + 1
+
+        newSimilarWords.push(<label htmlFor={`'similar-word-${newSimilarWordAmount}'`}>Similar Word {newSimilarWordAmount}</label>)
+        newSimilarWords.push(<input className='border-black border rounded' type='text' id={`'similar-word-${newSimilarWordAmount}'`} name={`'similar-word-${newSimilarWordAmount}'`}></input>)
+
+        setSimilarWords(similarWords.concat(newSimilarWords))
+    }
+
+    function addEtymology(e) {
+        e.preventDefault()
+        let newEtymology = []
+        const newEtymologyAmount = etymology.length / 2 + 1
+
+        newEtymology.push(<label htmlFor={`'etymology-${newEtymologyAmount}'`}>Etymology {newEtymologyAmount}</label>)
+        newEtymology.push(<input className='border-black border rounded' type='text' id={`'etymology-${newEtymologyAmount}'`} name={`'etymology-${newEtymologyAmount}'`}></input>)
+
+        setEtymology(etymology.concat(newEtymology))
+    }
+
+    function addExampleSentences(e) {
+        e.preventDefault()
+        let newExampleSentences = []
+        const newExampleSentencesAmount = exampleSentences.length / 4 + 1
+
+        newExampleSentences.push(<label htmlFor={`'example-sentence-english-${newExampleSentencesAmount}'`}>Example Sentence {newExampleSentencesAmount} (English)</label>)
+        newExampleSentences.push(<input className='border-black border rounded' type='text' id={`'example-sentence-english-${newExampleSentencesAmount}'`} name={`'example-sentence-english-${newExampleSentencesAmount}'`}></input>)
+
+        newExampleSentences.push(<label htmlFor={`'example-sentence-conlang-${newExampleSentencesAmount}'`}>Example Sentence {newExampleSentencesAmount} (Conlang)</label>)
+        newExampleSentences.push(<input className='border-black border rounded' type='text' id={`'example-sentence-conlang-${newExampleSentencesAmount}'`} name={`'example-sentence-conlang-${newExampleSentencesAmount}'`}></input>)
+
+        setExampleSentences(exampleSentences.concat(newExampleSentences))
+    }
+
+    function addGrammaticallyRelatedWord(e) {
+        e.preventDefault()
+        let newGrammaticallyRelatedWord = []
+        const newGrammaticallyRelatedWordAmount = grammaticallyRelatedWords.length / 2 + 1
+
+        newGrammaticallyRelatedWord.push(<label htmlFor={`'grammatically-related-word-${newGrammaticallyRelatedWordAmount}'`}>Grammatically Related Word {newGrammaticallyRelatedWordAmount}</label>)
+        newGrammaticallyRelatedWord.push(<input className='border-black border rounded' type='text' id={`'grammatically-related-word-${newGrammaticallyRelatedWordAmount}'`} name={`'grammatically-related-word-${newGrammaticallyRelatedWordAmount}'`}></input>)
+
+        setGrammaticallyRelatedWords(grammaticallyRelatedWords.concat(newGrammaticallyRelatedWord))
+    }
+
+    function addGrammarNote(e) {
+        e.preventDefault()
+        let newGrammarNote = []
+        const newGrammarNoteAmount = grammarNotes.length / 2 + 1
+        newGrammarNote.push(<label htmlFor={`'grammar-note-${newGrammarNoteAmount}'`}>Grammar Note {newGrammarNoteAmount}</label>)
+        newGrammarNote.push(<input className='border-black border rounded' type='text' id={`'grammar-note-${newGrammarNoteAmount}'`} name={`'grammar-note-${newGrammarNoteAmount}'`}></input>)
+
+        setGrammarNotes(grammarNotes.concat(newGrammarNote))
     }
 
 
     return (
         <div className="overflow-hidden">
             <main className="flex flex-col items-center justify-start w-screen min-h-screen">
-                <form id='SubmitForm' action={submit}>
+                <form className='flex flex-col gap-y-5' id='SubmitForm' action={submit}>
                     <div className="flex flex-col ">
-                        <label htmlFor='word'>Word</label>
+                        <label className="text-xl underline" htmlFor='word'>Word</label>
                         <input className='border-black border rounded' type='text' id='word' name="word"></input>
                     </div>
 
                     <div className="flex flex-col ">
-                        <p>Definitions</p>
+                        <p className="text-xl underline">Definitions</p>
                         {definitions}
                         <button className='hover:bg-slate-400 border-black border rounded' onClick={addDefinition}>Add Definition</button>
                     </div>
 
                     <fieldset className="flex flex-col">
-                        <p>Word Type</p>
+                        <p className="text-xl underline">Word Type</p>
                         <div>
                             <input type="radio" name="word-type" id="noun" value="1"></input>
                             <label htmlFor="noun">Noun</label>
@@ -54,20 +128,20 @@ export default function Page() {
                         </div>
                     </fieldset>
 
-                    {/*make an array*/}
                     <div className="flex flex-col ">
-                        <label htmlFor='alternate-forms'>Alternate Forms</label>
-                        <input className='border-black border rounded' type='text' id='alternate-forms' name="alternate-forms"></input>
+                        <p className="text-xl underline">Alternate Forms</p>
+                        {alternateForms}
+                        <button className='hover:bg-slate-400 border-black border rounded' onClick={addAlternateForm}>Add Alternate Form</button>
                     </div>
 
-                    {/*make an array*/}
                     <div className="flex flex-col ">
-                        <label htmlFor='similar-words'>Similar words</label>
-                        <input className='border-black border rounded' type='text' id='similar-words' name="similar-words"></input>
+                        <p className="text-xl underline">Similar Words</p>
+                        {similarWords}
+                        <button className='hover:bg-slate-400 border-black border rounded' onClick={addSimilarWord}>Add Similar Word</button>
                     </div>
 
                     <fieldset className="flex flex-col">
-                        <p>Verb Conjugation Pattern</p>
+                        <p className="text-xl underline">Verb Conjugation Pattern</p>
                         <div>
                             <input type="radio" name="conjugation-pattern" id="not-verb" value="1"></input>
                             <label htmlFor="not-verb">Not a Verb/No Conjugation Pattern</label>
@@ -87,36 +161,33 @@ export default function Page() {
                         <label htmlFor="has-il-ael-contrast">Does this word have il/ael contrast?</label>
                     </div>
 
-                    {/*make an array*/}
                     <div className="flex flex-col ">
-                        <label htmlFor='etymology'>Etymology</label>
-                        <input className='border-black border rounded' type='text' id='etymology' name="etymology"></input>
+                        <p className="text-xl underline">Etymology</p>
+                        {etymology}
+                        <button className='hover:bg-slate-400 border-black border rounded' onClick={addEtymology}>Add Etymology</button>
+                    </div>
+
+                    <div className="flex flex-col ">
+                        <p className="text-xl underline">Example Sentences</p>
+                        {exampleSentences}
+                        <button className='hover:bg-slate-400 border-black border rounded' onClick={addExampleSentences}>Add Example Sentence</button>
+                    </div>
+
+                    <div className="flex flex-col ">
+                        <p className="text-xl underline">Grammatically Related Words</p>
+                        {grammaticallyRelatedWords}
+                        <button className='hover:bg-slate-400 border-black border rounded' onClick={addGrammaticallyRelatedWord}>Add Grammatically Related Word</button>
                     </div>
 
                     {/*make an array*/}
                     <div className="flex flex-col ">
-                        <label htmlFor='example-sentence-english'>Example Sentence (English)</label>
-                        <input className='border-black border rounded' type='text' id='example-sentence-english' name="example-sentence-english"></input>
-                    </div>
-                    <div className="flex flex-col ">
-                        <label htmlFor='example-sentence-conlang'>Example Sentence (Conlang)</label>
-                        <input className='border-black border rounded' type='text' id='example-sentence-conlang' name="example-sentence-conlang"></input>
+                        <p className="text-xl underline">Grammar Notes</p>
+                        {grammarNotes}
+                        <button className='hover:bg-slate-400 border-black border rounded' onClick={addGrammarNote}>Add Grammar Note</button>
                     </div>
 
-                    {/*make an array*/}
-                    <div className="flex flex-col ">
-                        <label htmlFor='grammatically-related-words'>Grammatically Related Words</label>
-                        <input className='border-black border rounded' type='text' id='grammatically-related-words' name="grammatically-related-words"></input>
-                    </div>
-
-                    <div className="flex flex-col ">
-                        <label htmlFor='grammar-notes'>Grammar Notes</label>
-                        <input className='border-black border rounded' type='text' id='grammar-notes' name="grammar-notes"></input>
-                    </div>
-
-                    {/*make an array*/}
                     <fieldset className="flex flex-col">
-                        <p>Verb Transitivity</p>
+                        <p className="text-xl underline">Verb Transitivity</p>
                         <div>
                             <input type="radio" name="verb-transitivity" id="not-verb-t" value="1"></input>
                             <label htmlFor="not-verb-t">Not a Verb/Ambitransitive</label>
