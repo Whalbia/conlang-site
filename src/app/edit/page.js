@@ -1,7 +1,7 @@
 'use client'
 
-import { submitData } from "../actions"
 import { useState } from "react"
+import { updateDatabase } from "../api/updatedatabase"
 
 export default function Page() {
     let [definitions, setDefinitions] = useState([])
@@ -13,7 +13,7 @@ export default function Page() {
     let [grammarNotes, setGrammarNotes] = useState([])
 
     function submit(formData) {
-        submitData(formData)
+        updateDatabase(formData)
         location.reload()
     }
 
@@ -22,8 +22,8 @@ export default function Page() {
         let newDefinitions = []
         const newDefinitionAmount = definitions.length / 2 + 1
 
-        newDefinitions.push(<label htmlFor={`'definition-${newDefinitionAmount}'`}>Definition {newDefinitionAmount}</label>)
-        newDefinitions.push(<input className='border-black border rounded' type='text' id={`'definition-${newDefinitionAmount}'`} name={`'definition-${newDefinitionAmount}'`}></input>)
+        newDefinitions.push(<label htmlFor={`definition-${newDefinitionAmount}`}>Definition {newDefinitionAmount}</label>)
+        newDefinitions.push(<input className='border-black border rounded' type='text' id={`definition-${newDefinitionAmount}`} name={`definition-${newDefinitionAmount}`}></input>)
 
         setDefinitions(definitions.concat(newDefinitions))
     }
@@ -33,8 +33,8 @@ export default function Page() {
         let newAlternateForms = []
         const newAlternateFormAmount = alternateForms.length / 2 + 1
 
-        newAlternateForms.push(<label htmlFor={`'alternate-form-${newAlternateFormAmount}'`}>Alternate Form {newAlternateFormAmount}</label>)
-        newAlternateForms.push(<input className='border-black border rounded' type='text' id={`'alternate-form-${newAlternateFormAmount}'`} name={`'alternate-form-${newAlternateFormAmount}'`}></input>)
+        newAlternateForms.push(<label htmlFor={`alternate-form-${newAlternateFormAmount}`}>Alternate Form {newAlternateFormAmount}</label>)
+        newAlternateForms.push(<input className='border-black border rounded' type='text' id={`alternate-form-${newAlternateFormAmount}`} name={`alternate-form-${newAlternateFormAmount}`}></input>)
 
         setAlternateForms(alternateForms.concat(newAlternateForms))
     }
@@ -44,8 +44,8 @@ export default function Page() {
         let newSimilarWords = []
         const newSimilarWordAmount = similarWords.length / 2 + 1
 
-        newSimilarWords.push(<label htmlFor={`'similar-word-${newSimilarWordAmount}'`}>Similar Word {newSimilarWordAmount}</label>)
-        newSimilarWords.push(<input className='border-black border rounded' type='text' id={`'similar-word-${newSimilarWordAmount}'`} name={`'similar-word-${newSimilarWordAmount}'`}></input>)
+        newSimilarWords.push(<label htmlFor={`similar-word-${newSimilarWordAmount}`}>Similar Word {newSimilarWordAmount}</label>)
+        newSimilarWords.push(<input className='border-black border rounded' type='text' id={`similar-word-${newSimilarWordAmount}`} name={`similar-word-${newSimilarWordAmount}`}></input>)
 
         setSimilarWords(similarWords.concat(newSimilarWords))
     }
@@ -55,8 +55,8 @@ export default function Page() {
         let newEtymology = []
         const newEtymologyAmount = etymology.length / 2 + 1
 
-        newEtymology.push(<label htmlFor={`'etymology-${newEtymologyAmount}'`}>Etymology {newEtymologyAmount}</label>)
-        newEtymology.push(<input className='border-black border rounded' type='text' id={`'etymology-${newEtymologyAmount}'`} name={`'etymology-${newEtymologyAmount}'`}></input>)
+        newEtymology.push(<label htmlFor={`etymology-${newEtymologyAmount}`}>Etymology {newEtymologyAmount}</label>)
+        newEtymology.push(<input className='border-black border rounded' type='text' id={`etymology-${newEtymologyAmount}`} name={`etymology-${newEtymologyAmount}`}></input>)
 
         setEtymology(etymology.concat(newEtymology))
     }
@@ -66,11 +66,11 @@ export default function Page() {
         let newExampleSentences = []
         const newExampleSentencesAmount = exampleSentences.length / 4 + 1
 
-        newExampleSentences.push(<label htmlFor={`'example-sentence-english-${newExampleSentencesAmount}'`}>Example Sentence {newExampleSentencesAmount} (English)</label>)
-        newExampleSentences.push(<input className='border-black border rounded' type='text' id={`'example-sentence-english-${newExampleSentencesAmount}'`} name={`'example-sentence-english-${newExampleSentencesAmount}'`}></input>)
+        newExampleSentences.push(<label htmlFor={`example-sentence-english-${newExampleSentencesAmount}`}>Example Sentence {newExampleSentencesAmount} (English)</label>)
+        newExampleSentences.push(<input className='border-black border rounded' type='text' id={`example-sentence-english-${newExampleSentencesAmount}`} name={`example-sentence-english-${newExampleSentencesAmount}`}></input>)
 
-        newExampleSentences.push(<label htmlFor={`'example-sentence-conlang-${newExampleSentencesAmount}'`}>Example Sentence {newExampleSentencesAmount} (Conlang)</label>)
-        newExampleSentences.push(<input className='border-black border rounded' type='text' id={`'example-sentence-conlang-${newExampleSentencesAmount}'`} name={`'example-sentence-conlang-${newExampleSentencesAmount}'`}></input>)
+        newExampleSentences.push(<label htmlFor={`example-sentence-conlang-${newExampleSentencesAmount}`}>Example Sentence {newExampleSentencesAmount} (Conlang)</label>)
+        newExampleSentences.push(<input className='border-black border rounded' type='text' id={`example-sentence-conlang-${newExampleSentencesAmount}`} name={`example-sentence-conlang-${newExampleSentencesAmount}`}></input>)
 
         setExampleSentences(exampleSentences.concat(newExampleSentences))
     }
@@ -80,8 +80,8 @@ export default function Page() {
         let newGrammaticallyRelatedWord = []
         const newGrammaticallyRelatedWordAmount = grammaticallyRelatedWords.length / 2 + 1
 
-        newGrammaticallyRelatedWord.push(<label htmlFor={`'grammatically-related-word-${newGrammaticallyRelatedWordAmount}'`}>Grammatically Related Word {newGrammaticallyRelatedWordAmount}</label>)
-        newGrammaticallyRelatedWord.push(<input className='border-black border rounded' type='text' id={`'grammatically-related-word-${newGrammaticallyRelatedWordAmount}'`} name={`'grammatically-related-word-${newGrammaticallyRelatedWordAmount}'`}></input>)
+        newGrammaticallyRelatedWord.push(<label htmlFor={`grammatically-related-word-${newGrammaticallyRelatedWordAmount}`}>Grammatically Related Word {newGrammaticallyRelatedWordAmount}</label>)
+        newGrammaticallyRelatedWord.push(<input className='border-black border rounded' type='text' id={`grammatically-related-word-${newGrammaticallyRelatedWordAmount}`} name={`grammatically-related-word-${newGrammaticallyRelatedWordAmount}`}></input>)
 
         setGrammaticallyRelatedWords(grammaticallyRelatedWords.concat(newGrammaticallyRelatedWord))
     }
@@ -90,8 +90,8 @@ export default function Page() {
         e.preventDefault()
         let newGrammarNote = []
         const newGrammarNoteAmount = grammarNotes.length / 2 + 1
-        newGrammarNote.push(<label htmlFor={`'grammar-note-${newGrammarNoteAmount}'`}>Grammar Note {newGrammarNoteAmount}</label>)
-        newGrammarNote.push(<input className='border-black border rounded' type='text' id={`'grammar-note-${newGrammarNoteAmount}'`} name={`'grammar-note-${newGrammarNoteAmount}'`}></input>)
+        newGrammarNote.push(<label htmlFor={`grammar-note-${newGrammarNoteAmount}`}>Grammar Note {newGrammarNoteAmount}</label>)
+        newGrammarNote.push(<input className='border-black border rounded' type='text' id={`grammar-note-${newGrammarNoteAmount}`} name={`grammar-note-${newGrammarNoteAmount}`}></input>)
 
         setGrammarNotes(grammarNotes.concat(newGrammarNote))
     }
