@@ -64,7 +64,7 @@ export default function Page() {
     function addExampleSentences(e) {
         e.preventDefault()
         let newExampleSentences = []
-        const newExampleSentencesAmount = exampleSentences.length / 4 + 1
+        const newExampleSentencesAmount = exampleSentences.length / 6 + 1
 
         newExampleSentences.push(<label htmlFor={`example-sentence-english-${newExampleSentencesAmount}`}>Example Sentence {newExampleSentencesAmount} (English)</label>)
         newExampleSentences.push(<input className='border-black border rounded' type='text' id={`example-sentence-english-${newExampleSentencesAmount}`} name={`example-sentence-english-${newExampleSentencesAmount}`}></input>)
@@ -72,6 +72,8 @@ export default function Page() {
         newExampleSentences.push(<label htmlFor={`example-sentence-conlang-${newExampleSentencesAmount}`}>Example Sentence {newExampleSentencesAmount} (Conlang)</label>)
         newExampleSentences.push(<input className='border-black border rounded' type='text' id={`example-sentence-conlang-${newExampleSentencesAmount}`} name={`example-sentence-conlang-${newExampleSentencesAmount}`}></input>)
 
+        newExampleSentences.push(<label htmlFor={`example-sentence-def-${newExampleSentencesAmount}`}>Which Definition Does This Sentence Correspond To?</label>)
+        newExampleSentences.push(<input className='border-black border rounded' type='text' id={`example-sentence-def-${newExampleSentencesAmount}`} name={`example-sentence-def-${newExampleSentencesAmount}`}></input>)
         setExampleSentences(exampleSentences.concat(newExampleSentences))
     }
 
@@ -103,7 +105,7 @@ export default function Page() {
                 <form className='flex flex-col gap-y-5' id='SubmitForm' action={submit}>
                     <div className="flex flex-col ">
                         <label className="text-xl underline" htmlFor='word'>Word</label>
-                        <input className='border-black border rounded' type='text' id='word' name="word"></input>
+                        <input className='border-black border rounded pl-1' type='text' id='word' name="word"></input>
                     </div>
 
                     <div className="flex flex-col ">
