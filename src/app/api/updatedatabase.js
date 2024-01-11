@@ -7,10 +7,6 @@ export async function updateDatabase(formData) {
     client.connect();
 
     //starting the query and concatentating based on the form data
-    let queryfake=`INSERT INTO dictionary (word, definitions, word_type, alternate_forms, similar_words, verb_conjugation_pattern, has_il_ael_contrast, etymology, example_sentences, grammatically_related_words, grammar_notes, verb_transitivity)
-    VALUES('orrvaen', ARRAY['to eat'], 2, ARRAY[''], ARRAY[''], 2, false, ARRAY['orrv'], ARRAY[('orrvytaenkigk sa ni orrpae mag', 'You didn''t eat her food', 1)::example_sentence_pair]::example_sentence_pair[], ARRAY['orrven', 'ateorrpae', 'dorr', 'orrel', 'orrkwa', 'orrpae', 'orrpaemjek', 'orrvug', 'orrvyk', 'orrvyl', 'orrvyz', 'orrvai', 'orrvaty', 'enorrvuv', 'orrvuv'], ARRAY[''], 1);
-    `
-
     let query=`INSERT INTO dictionary (word, definitions, word_type, alternate_forms, similar_words, verb_conjugation_pattern, has_il_ael_contrast, etymology, example_sentences, grammatically_related_words, grammar_notes, verb_transitivity) VALUES(`
 
     let definitions = []

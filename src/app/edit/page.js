@@ -181,7 +181,6 @@ export default function Page() {
                         <button className='hover:bg-slate-400 border-black border rounded' onClick={addGrammaticallyRelatedWord}>Add Grammatically Related Word</button>
                     </div>
 
-                    {/*make an array*/}
                     <div className="flex flex-col ">
                         <p className="text-xl underline">Grammar Notes</p>
                         {grammarNotes}
