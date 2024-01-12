@@ -3,7 +3,6 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 
 export default function Page() {
-  console.log("first page rendered")
   let router = useRouter()
 
   function handleSubmit(formData) {

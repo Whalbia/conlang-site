@@ -13,7 +13,6 @@ export default function Page({params}) {
     console.log("component rendered")
 
     useEffect(()=>{
-        console.log("useEffect running")
         const search = params.search
         async function fetchData() {
             const res = await fetch("http://localhost:3000/api/searchresults", {
@@ -24,10 +23,11 @@ export default function Page({params}) {
                 body: JSON.stringify({search})
             })
             const result = await res.json() 
-            console.log(result)
+            console.log(result[0].word)
+            console.log(result[0].definitions)
+            console.log(result[0].similar_words)
         }
         fetchData()
-        console.log("useEffect done")
     }, [])
 
     return (
