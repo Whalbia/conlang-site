@@ -10,8 +10,6 @@
 import { useEffect } from "react"
 
 export default function Page({params}) {
-    console.log("component rendered")
-
     useEffect(()=>{
         const search = params.search
         async function fetchData() {

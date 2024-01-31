@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from "react"
-import { updateDatabase } from "../api/updatedatabase"
 
 export default function Page() {
     let [definitions, setDefinitions] = useState([])
@@ -13,8 +12,17 @@ export default function Page() {
     let [grammarNotes, setGrammarNotes] = useState([])
 
     function submit(formData) {
-        updateDatabase(formData)
-        location.reload()
+        //updateDatabase(formData)//call the edit route w router and send formdata with json
+        async function fetchData(formData) {
+            const res = await fetch("http://localhost:3000/api/edit", {
+                method: "POST",
+                body: formData
+            })
+        }
+        console.log("fetching data")
+        fetchData(formData)
+        console.log("fetchData completed")
+        //location.reload()
     }
 
     function addDefinition(e) {
