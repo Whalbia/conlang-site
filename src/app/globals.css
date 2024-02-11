@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond&display=swap');
 
 * {
-    font-family: 'Cormorant Garamond', serif;
-}
+    font-family: 'Cormorant Garamond';
+} */

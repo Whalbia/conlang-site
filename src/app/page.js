@@ -1,5 +1,4 @@
 'use client'
-import Link from "next/link"
 import { useRouter } from "next/navigation"
 
 export default function Page() {
@@ -14,17 +13,12 @@ export default function Page() {
     <div className="overflow-hidden">
       <div className="w-full h-screen flex flex-col justify-center items-center">
         <p className="text-7xl pb-8">Conlang Name</p>
-
+        <p>1 2 3 4 5 6 7 8 9</p>
         <div>
           <form action={handleSubmit} id="SubmitForm">
             <div>
               {/* Search Icon */}
               <input className="border-black border-[1px] rounded-lg w-96 h-8" type="text" id="search" name="search" placeholder="Search the conlang"></input>
-            </div>
-
-            <div>{/*On click event to pull up filters*/}
-              {/* Filter Icon */}
-              <p>Filters</p>
             </div>
 
             <input type="submit" className="hover:cursor-pointer"></input>

@@ -52,6 +52,7 @@ export default function Page({params}) {
                 <div className="w-full h-auto flex flex-row justify-center items-start px-[20vw] gap-5 flex-wrap">
                     {searchResults.map((result)=>{
                         return <DictionaryCard data={result}></DictionaryCard>
+                        {/*Turn into two flex colums */}
                     })}
                 </div>
                 :
