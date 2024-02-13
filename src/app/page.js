@@ -13,7 +13,6 @@ export default function Page() {
     <div className="overflow-hidden">
       <div className="w-full h-screen flex flex-col justify-center items-center">
         <p className="text-7xl pb-8">Conlang Name</p>
-        <p>1 2 3 4 5 6 7 8 9</p>
         <div>
           <form action={handleSubmit} id="SubmitForm">
             <div>
