@@ -11,6 +11,7 @@ function getQuery(formData) {
     let exampleSentences = []
     let grammaticallyRelatedWords = []
     let grammarNotes = []
+    //CHANGE THIS TO GET ALL FUNCTIONS FROM FORM DATA BS THIS IS HELLA INEFFICIENT
     for (const key of formData.keys()){
         if (key.includes('definition')){
             definitions.push(formData.get(key).replaceAll(`'`, `''`))
@@ -134,9 +135,74 @@ function getQuery(formData) {
         query = query.concat(`ARRAY[''], `)
     }
     //verb_transitivity
-    query = query.concat(`${formData.get('verb-transitivity')});`)
+    query = query.concat(`${formData.get('verb-transitivity')}) `)
 
+    query = query.concat('RETURNING word_id;')
     return query
+}
+
+async function insertRoot(rootsAffixes, client) {
+    let root_ids = []
+
+    let query1 = `SELECT * FROM roots WHERE root IN (`
+
+    //select existing roots from db and get their ids
+    for (let i = 0;i < rootsAffixes.length;i++) {
+        query1 = query1.concat(`'${rootsAffixes[i]}', `)
+    }
+    query1 = query1.slice(0, -2)
+    query1 = query1.concat(');')
+
+
+    console.log("query1: ", query1)
+    const result1 = await client.query(query1)
+    console.log(result1.rows)
+    for (let i = result1.rows.length - 1;i >= 0;i--) {
+        //store already existing root ids, remove roots that were present in the roots table
+        root_ids.push(result1.rows[i].root_id)
+        let index = rootsAffixes.indexOf(result1.rows[i].root)
+        rootsAffixes.splice(index, 1)
+    }
+
+    //rootsAffixes contains roots that were not present in the root table
+    if (rootsAffixes.length > 0){
+        let query2 = `INSERT INTO roots(root) VALUES `
+
+        //select existing roots from db and get their ids
+        for (let i = 0;i < rootsAffixes.length;i++) {
+            query2 = query2.concat(`('${rootsAffixes[i]}'), `)
+        }
+        query2 = query2.slice(0, -2)
+        query2 = query2.concat(' RETURNING root_id;')
+
+        console.log("query2: ", query2)
+        const result2 = await client.query(query2)
+        console.log(result2.rows)
+        for (let i = 0;i < result2.rows.length;i++) {
+            //store root ids of newly inserted roots
+            root_ids.push(result2.rows[i].root_id)
+        }
+    }
+    
+
+    return root_ids
+}
+
+async function insertWordRootIds(wordId, rootIds, client) {
+    let query = `INSERT INTO words_roots (word_id, root_id) VALUES `
+
+    for (let i = 0;i < rootIds.length;i++){
+        query = query.concat(`(${wordId}, ${rootIds[i]}), `)
+    }
+    query = query.slice(0, -2)
+    query = query.concat(';')
+
+    console.log(query)
+    console.log("inserting root/word ids")
+    const res = await client.query(query)
+    console.log("insertion complete")
+
+    return res
 }
 
 export async function POST(request) {
@@ -153,6 +219,18 @@ export async function POST(request) {
     var client = new pg.Client(conString);
     await client.connect();
     const result = await client.query(query)
+    const word_id = result.rows[0].word_id
+    const rootsAffixes = formData.getAll('roots-affixes')
+    rootsAffixes.map((item) => item.replaceAll(`'`, `''`))
+    if (rootsAffixes.length > 0) {
+        console.log('Roots Affixes', rootsAffixes)
+        console.log("insert root starting")
+        const root_ids = await insertRoot(rootsAffixes, client)
+        console.log("roots inserted successfully")
+        console.log(root_ids)
+        
+        const res = await insertWordRootIds(word_id, root_ids, client)
+    }
     await client.end()
 
     return NextResponse.json(result);

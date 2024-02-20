@@ -10,6 +10,7 @@ export default function Page() {
     let [exampleSentences, setExampleSentences] = useState([])
     let [grammaticallyRelatedWords, setGrammaticallyRelatedWords] = useState([])
     let [grammarNotes, setGrammarNotes] = useState([])
+    let [rootsAffixes, setRootsAffixes] = useState([])
     let [loading, setLoading] = useState(false)
 
     function submit(formData) {
@@ -107,6 +108,16 @@ export default function Page() {
         setGrammarNotes(grammarNotes.concat(newGrammarNote))
     }
 
+    function addRootAffix(e) {
+        e.preventDefault()
+        let newRootAffix = []
+        const newRootAffixAmount = rootsAffixes.length / 2 + 1
+        newRootAffix.push(<label htmlFor={`roots-affixes-${newRootAffixAmount}`}>Root/Affix {newRootAffixAmount}</label>)
+        newRootAffix.push(<input className='border-black border rounded' type='text' id={`roots-affixes-${newRootAffixAmount}`} name='roots-affixes'></input>)
+
+        setRootsAffixes(rootsAffixes.concat(newRootAffix))
+    }
+
     function remove(e) {
         e.preventDefault()
         const toRemove = e.target.id
@@ -130,6 +141,9 @@ export default function Page() {
         }
         else if (toRemove == "gram-note"){
             setGrammarNotes(grammarNotes.slice(0, -2))
+        }
+        else if (toRemove == "root-affix"){
+            setRootsAffixes(rootsAffixes.slice(0, -2))
         }
     }
 
@@ -198,6 +212,13 @@ export default function Page() {
                         {grammarNotes}
                         <button className='hover:bg-slate-400 border-black border rounded w-40 mt-2' onClick={addGrammarNote}>Add Grammar Note</button>
                         <button className='hover:bg-slate-400 border-black border rounded w-40 mt-2' onClick={remove} id="gram-note">Remove Last Item</button>
+                    </div>
+
+                    <div className="flex flex-col ">
+                        <p className="text-xl underline">Roots/Affixes</p>
+                        {rootsAffixes}
+                        <button className='hover:bg-slate-400 border-black border rounded w-40 mt-2' onClick={addRootAffix}>Add Root/Affix</button>
+                        <button className='hover:bg-slate-400 border-black border rounded w-40 mt-2' onClick={remove} id="root-affix">Remove Last Item</button>
                     </div>
 
                     <div className="w-full flex flex-row justify-center gap-x-20">
