@@ -112,27 +112,27 @@ export default function DictionaryCard({data}) {
             { expanded ?  
             <>
                 {/* Similar Words */}
-                <div className="flex flex-row justify-start align-center flex-wrap gap-x-2">
+                <div className={`flex flex-row justify-start align-center flex-wrap gap-x-2 ${data.similar_words[0]!='' ? '' : 'hidden'}`}>
                     <span className={corgySemibold.className}>Similar to:</span>
                     {data.similar_words.map((word, index) => index == data.similar_words.length-1 ? <span>{word}</span> : <span>{word},</span>)}
                 </div>
                 
                 {/* Alternate Forms */}
-                <div className="flex flex-row justify-start align-center flex-wrap gap-x-2">
+                <div className={`flex flex-row justify-start align-center flex-wrap gap-x-2 ${data.alternate_forms[0]!='' ? '' : 'hidden'}`}>
                     <span className={corgySemibold.className}>Alternate forms:</span>
                     {data.alternate_forms.map((word, index) => index == data.alternate_forms.length-1 ? <span>{word}</span> : <span>{word},</span>)}
                 </div>
 
-                <hr className='border-black border-t-[1px]'></hr>
+                <hr className={`border-black border-t-[1px]  ${data.alternate_forms[0]=='' && data.similar_words[0]=='' ? 'hidden' : ''}`}></hr>
 
                 {/* Etymology */}
-                <div className="flex flex-row justify-start align-center flex-wrap gap-x-2">
+                <div className={`flex flex-row justify-start align-center flex-wrap gap-x-2 ${data.etymology[0]!='' ? '' : 'hidden'}`}>
                     <span className={corgySemibold.className}>Etymology:</span>
                     {data.etymology.map((word, index) => index == data.etymology.length-1 ? <span>{word}</span> : <span>{word},</span>)}
                 </div>
                 
                 {/* Grammatically Related Words */}
-                <div className="flex flex-row justify-start align-center flex-wrap gap-x-2">
+                <div className={`flex flex-row justify-start align-center flex-wrap gap-x-2 ${data.grammatically_related_words[0]!='' ? '' : 'hidden'}`}>
                     <span className={corgySemibold.className}>Grammatically-related words:</span>
                     {data.grammatically_related_words.map((word, index) => index == data.grammatically_related_words.length-1 ? <span>{word}</span> : <span>{word},</span>)}
                 </div>
@@ -140,7 +140,7 @@ export default function DictionaryCard({data}) {
                 <hr className='border-black border-t-[1px]'></hr>
 
                 {/* Grammar Notes */}
-                <div className="flex flex-row justify-start align-center flex-wrap gap-x-2">
+                <div className={`flex flex-row justify-start align-center flex-wrap gap-x-2 ${data.grammar_notes[0]!='' ? '' : 'hidden'}`}>
                     <span className={corgySemibold.className}>Notes on usage:</span>
                     {data.grammar_notes.map((word, index) => index == data.grammar_notes.length-1 ? <span>{word}</span> : <span>{word},</span>)}
                 </div>

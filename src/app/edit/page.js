@@ -33,7 +33,7 @@ export default function Page() {
         const newDefinitionAmount = definitions.length / 2 + 1
 
         newDefinitions.push(<label htmlFor={`definition-${newDefinitionAmount}`}>Definition {newDefinitionAmount}</label>)
-        newDefinitions.push(<input className='border-black border rounded' type='text' id={`definition-${newDefinitionAmount}`} name={`definition-${newDefinitionAmount}`}></input>)
+        newDefinitions.push(<textarea className='border-black border rounded' type='text' id={`definition-${newDefinitionAmount}`} name={`definition-${newDefinitionAmount}`}></textarea>)
 
         setDefinitions(definitions.concat(newDefinitions))
     }
@@ -44,7 +44,7 @@ export default function Page() {
         const newAlternateFormAmount = alternateForms.length / 2 + 1
 
         newAlternateForms.push(<label htmlFor={`alternate-form-${newAlternateFormAmount}`}>Alternate Form {newAlternateFormAmount}</label>)
-        newAlternateForms.push(<input className='border-black border rounded' type='text' id={`alternate-form-${newAlternateFormAmount}`} name={`alternate-form-${newAlternateFormAmount}`}></input>)
+        newAlternateForms.push(<textarea className='border-black border rounded' type='text' id={`alternate-form-${newAlternateFormAmount}`} name={`alternate-form-${newAlternateFormAmount}`}></textarea>)
 
         setAlternateForms(alternateForms.concat(newAlternateForms))
     }
@@ -55,7 +55,7 @@ export default function Page() {
         const newSimilarWordAmount = similarWords.length / 2 + 1
 
         newSimilarWords.push(<label htmlFor={`similar-word-${newSimilarWordAmount}`}>Similar Word {newSimilarWordAmount}</label>)
-        newSimilarWords.push(<input className='border-black border rounded' type='text' id={`similar-word-${newSimilarWordAmount}`} name={`similar-word-${newSimilarWordAmount}`}></input>)
+        newSimilarWords.push(<textarea className='border-black border rounded' type='text' id={`similar-word-${newSimilarWordAmount}`} name={`similar-word-${newSimilarWordAmount}`}></textarea>)
 
         setSimilarWords(similarWords.concat(newSimilarWords))
     }
@@ -66,7 +66,7 @@ export default function Page() {
         const newEtymologyAmount = etymology.length / 2 + 1
 
         newEtymology.push(<label htmlFor={`etymology-${newEtymologyAmount}`}>Etymology {newEtymologyAmount}</label>)
-        newEtymology.push(<input className='border-black border rounded' type='text' id={`etymology-${newEtymologyAmount}`} name={`etymology-${newEtymologyAmount}`}></input>)
+        newEtymology.push(<textarea className='border-black border rounded' type='text' id={`etymology-${newEtymologyAmount}`} name={`etymology-${newEtymologyAmount}`}></textarea>)
 
         setEtymology(etymology.concat(newEtymology))
     }
@@ -77,13 +77,13 @@ export default function Page() {
         const newExampleSentencesAmount = exampleSentences.length / 6 + 1
 
         newExampleSentences.push(<label htmlFor={`example-sentence-english-${newExampleSentencesAmount}`}>Example Sentence {newExampleSentencesAmount} (English)</label>)
-        newExampleSentences.push(<input className='border-black border rounded' type='text' id={`example-sentence-english-${newExampleSentencesAmount}`} name={`example-sentence-english-${newExampleSentencesAmount}`}></input>)
+        newExampleSentences.push(<textarea className='border-black border rounded' type='text' id={`example-sentence-english-${newExampleSentencesAmount}`} name={`example-sentence-english-${newExampleSentencesAmount}`}></textarea>)
 
         newExampleSentences.push(<label htmlFor={`example-sentence-conlang-${newExampleSentencesAmount}`}>Example Sentence {newExampleSentencesAmount} (Conlang)</label>)
-        newExampleSentences.push(<input className='border-black border rounded' type='text' id={`example-sentence-conlang-${newExampleSentencesAmount}`} name={`example-sentence-conlang-${newExampleSentencesAmount}`}></input>)
+        newExampleSentences.push(<textarea className='border-black border rounded' type='text' id={`example-sentence-conlang-${newExampleSentencesAmount}`} name={`example-sentence-conlang-${newExampleSentencesAmount}`}></textarea>)
 
         newExampleSentences.push(<label htmlFor={`example-sentence-def-${newExampleSentencesAmount}`}>Which Definition Does This Sentence Correspond To?</label>)
-        newExampleSentences.push(<input className='border-black border rounded' type='text' id={`example-sentence-def-${newExampleSentencesAmount}`} name={`example-sentence-def-${newExampleSentencesAmount}`}></input>)
+        newExampleSentences.push(<textarea className='border-black border rounded' type='text' id={`example-sentence-def-${newExampleSentencesAmount}`} name={`example-sentence-def-${newExampleSentencesAmount}`}></textarea>)
         setExampleSentences(exampleSentences.concat(newExampleSentences))
     }
 
@@ -93,7 +93,7 @@ export default function Page() {
         const newGrammaticallyRelatedWordAmount = grammaticallyRelatedWords.length / 2 + 1
 
         newGrammaticallyRelatedWord.push(<label htmlFor={`grammatically-related-word-${newGrammaticallyRelatedWordAmount}`}>Grammatically Related Word {newGrammaticallyRelatedWordAmount}</label>)
-        newGrammaticallyRelatedWord.push(<input className='border-black border rounded' type='text' id={`grammatically-related-word-${newGrammaticallyRelatedWordAmount}`} name={`grammatically-related-word-${newGrammaticallyRelatedWordAmount}`}></input>)
+        newGrammaticallyRelatedWord.push(<textarea className='border-black border rounded' type='text' id={`grammatically-related-word-${newGrammaticallyRelatedWordAmount}`} name={`grammatically-related-word-${newGrammaticallyRelatedWordAmount}`}></textarea>)
 
         setGrammaticallyRelatedWords(grammaticallyRelatedWords.concat(newGrammaticallyRelatedWord))
     }
@@ -103,7 +103,7 @@ export default function Page() {
         let newGrammarNote = []
         const newGrammarNoteAmount = grammarNotes.length / 2 + 1
         newGrammarNote.push(<label htmlFor={`grammar-note-${newGrammarNoteAmount}`}>Grammar Note {newGrammarNoteAmount}</label>)
-        newGrammarNote.push(<input className='border-black border rounded' type='text' id={`grammar-note-${newGrammarNoteAmount}`} name={`grammar-note-${newGrammarNoteAmount}`}></input>)
+        newGrammarNote.push(<textarea className='border-black border rounded' type='text' id={`grammar-note-${newGrammarNoteAmount}`} name={`grammar-note-${newGrammarNoteAmount}`}></textarea>)
 
         setGrammarNotes(grammarNotes.concat(newGrammarNote))
     }
@@ -113,7 +113,7 @@ export default function Page() {
         let newRootAffix = []
         const newRootAffixAmount = rootsAffixes.length / 2 + 1
         newRootAffix.push(<label htmlFor={`roots-affixes-${newRootAffixAmount}`}>Root/Affix {newRootAffixAmount}</label>)
-        newRootAffix.push(<input className='border-black border rounded' type='text' id={`roots-affixes-${newRootAffixAmount}`} name='roots-affixes'></input>)
+        newRootAffix.push(<textarea className='border-black border rounded' type='text' id={`roots-affixes-${newRootAffixAmount}`} name='roots-affixes'></textarea>)
 
         setRootsAffixes(rootsAffixes.concat(newRootAffix))
     }
