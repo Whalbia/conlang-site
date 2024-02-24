@@ -1,4 +1,69 @@
+"use client"
+import { useState } from 'react'
+import { useEffect } from 'react'
+
+import { Cormorant_Garamond } from 'next/font/google'
+
+const corgySemibold = Cormorant_Garamond({
+    subsets: ['latin'],
+    display: 'swap',
+    weight: '600'
+})
+
+const corgySemiboldItalic = Cormorant_Garamond({
+subsets: ['latin'],
+display: 'swap',
+weight: '600',
+style: 'italic'
+})
+
+const corgyMediumItalic = Cormorant_Garamond({
+    subsets: ['latin'],
+    display: 'swap',
+    weight: '500',
+    style: 'italic'
+    })
+  
 export default function DictionaryCard({data}) {
+    const [expanded, setExpanded] = useState(false)
+    const [expandedExamples, setExpandedExamples] = useState(false)
+    const [exampleSentences, setExampleSentences] = useState({})
+
+    useEffect(()=>{
+        let exampleSentences = {}
+        const regex = /[\w\s]+/g
+        const sentences = data.example_sentences.match(regex)
+        
+        console.log("sentences", sentences)
+
+
+        for (let i = 2;i < sentences.length ; i+=3) {
+            let number = sentences[i]
+            let sentenceEnglish = sentences[i-2]
+            let sentenceConlang = sentences[i-1]
+            let temp = {
+                [number] : {
+                    'engSentence' : sentenceEnglish,
+                    'conlangSentence' : sentenceConlang
+                }
+            }
+            exampleSentences = Object.assign(exampleSentences, temp)
+        }
+
+        setExampleSentences(exampleSentences)
+        console.log('Exaxmple Sentences', exampleSentences)
+    }, [])
+
+    const handleClickExamples = (e) => {
+        e.preventDefault()
+        expandedExamples ? setExpandedExamples(false) : setExpandedExamples(true)
+    }
+
+    const handleClickShowMore = (e) => {
+        e.preventDefault()
+        expanded ? setExpanded(false) : setExpanded(true)
+    }
+
     const word_type = {
         '1': 'noun',
         '2': 'verb',
@@ -11,45 +76,84 @@ export default function DictionaryCard({data}) {
     }
     const verb_conjugation_pattern = {
         //1 = not a verb
-        '2': '-yt verb',
-        '3': '-uk verb',
-        '4': '-vu verb',
-        '5': '-la verb',
-        '6': 'misc verb'
+        '2': '-yt',
+        '3': '-uk',
+        '4': '-vu',
+        '5': '-la',
+        '6': 'misc'
     }
     const verb_transitivity = {
         //1 = not a verb
-        '2': 'intransitive verb',
-        '3': 'transitive verb',
+        '2': 'intransitive',
+        '3': 'transitive',
         '4': 'ambitransitive'
     }
 
     return (
-        <div className="w-2/5 h-auto border-[1px] rounded-sm border-black p-4">
-            <h1 className="text-2xl">{data.word}</h1> 
-            <div className="">
-                <p>{word_type[data.word_type]}.</p> 
-                <p>{verb_conjugation_pattern[data.verb_conjugation_pattern]}</p> 
-                <p>{verb_transitivity[data.verb_transitivity]}</p> 
-                <p>{data.has_il_ael_contrast ? 'Has Il Ael Contrast' : ''}</p> 
+        <div className="w-[30vw] h-auto border-[1px] rounded-2xl border-black p-6 gap-y-3 flex flex-col align-start text-xl">
+            <h1 className={`text-5xl ${corgySemiboldItalic.className}`}>{data.word}</h1> 
+            <div className="flex flex-row w-full"> 
+                <p>{`${verb_transitivity[data.verb_transitivity]}
+                 ${verb_conjugation_pattern[data.verb_conjugation_pattern]}
+                 ${word_type[data.word_type]}
+                 ${data.has_il_ael_contrast && word_type[data.word_type] == 'verb' ? 'w/ IAC' : 'w/o IAC'}`}</p>
             </div>
-            <p className="">similar_words: {data.similar_words}</p> 
-            <hr></hr>
-            <ul className="">
+
+            <hr className='border-black border-t-[1px]'></hr>
+
+            <button className='w-2/5 border-black border-[1px] rounded-xl hover:bg-slate-300' onClick={handleClickExamples}>{expandedExamples ? 'Hide Examples' : 'Show Examples'}</button>
                 {data.definitions.map((definition, index) => { 
-                    return <li>{index+1}. {definition}</li>
+                    return <ul className='list-inside'>
+                                <li>{index+1}. {definition}</li>{expandedExamples && exampleSentences.hasOwnProperty(index+1) ? 
+                                <li className='list-disc text-xs ml-8'><span className={`text-lg ${corgySemiboldItalic.className}`}>{exampleSentences[index+1].engSentence}</span><p className='text-lg ml-4'>{exampleSentences[index+1].conlangSentence}</p></li> : ''}
+                            </ul>
                 })}
-            </ul>
-            <p>etymology: {data.etymology}</p>
-            <p>alternate_forms: {data.alternate_forms}</p> 
-            <p>example_sentences: {data.example_sentences}</p>
-            <p>grammatically_related_words:</p>
-            <ul className="">
-                {data.grammatically_related_words.map((word, index) => {
-                    return <li>{index+1}. {word}</li>
-                })}
-            </ul>
-            <p>grammar_notes: {data.grammar_notes}</p>
+
+            { expanded ?  
+            <>
+                {/* Similar Words */}
+                <div className="flex flex-row justify-start align-center flex-wrap gap-x-2">
+                    <span className={corgySemibold.className}>Similar to:</span>
+                    {data.similar_words.map((word, index) => index == data.similar_words.length-1 ? <span>{word}</span> : <span>{word},</span>)}
+                </div>
+                
+                {/* Alternate Forms */}
+                <div className="flex flex-row justify-start align-center flex-wrap gap-x-2">
+                    <span className={corgySemibold.className}>Alternate forms:</span>
+                    {data.alternate_forms.map((word, index) => index == data.alternate_forms.length-1 ? <span>{word}</span> : <span>{word},</span>)}
+                </div>
+
+                <hr className='border-black border-t-[1px]'></hr>
+
+                {/* Etymology */}
+                <div className="flex flex-row justify-start align-center flex-wrap gap-x-2">
+                    <span className={corgySemibold.className}>Etymology:</span>
+                    {data.etymology.map((word, index) => index == data.etymology.length-1 ? <span>{word}</span> : <span>{word},</span>)}
+                </div>
+                
+                {/* Grammatically Related Words */}
+                <div className="flex flex-row justify-start align-center flex-wrap gap-x-2">
+                    <span className={corgySemibold.className}>Grammatically-related words:</span>
+                    {data.grammatically_related_words.map((word, index) => index == data.grammatically_related_words.length-1 ? <span>{word}</span> : <span>{word},</span>)}
+                </div>
+
+                <hr className='border-black border-t-[1px]'></hr>
+
+                {/* Grammar Notes */}
+                <div className="flex flex-row justify-start align-center flex-wrap gap-x-2">
+                    <span className={corgySemibold.className}>Notes on usage:</span>
+                    {data.grammar_notes.map((word, index) => index == data.grammar_notes.length-1 ? <span>{word}</span> : <span>{word},</span>)}
+                </div>
+            </>
+            :
+            ''
+            }
+            <button className={expanded ? '-mb-4':''} onClick={handleClickShowMore}>
+            {expanded ?
+            <><p>Less</p><p className='text-5xl'>^</p></> 
+            : <><p>Show More</p><p className='text-5xl transform rotate-180 -mt-4'>^</p></> }
+            </button>
+            
         </div>
     );
 }

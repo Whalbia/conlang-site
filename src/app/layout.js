@@ -5,7 +5,7 @@ import { Cormorant_Garamond } from 'next/font/google'
 const corgy = Cormorant_Garamond({
   subsets: ['latin'],
   display: 'swap',
-  weight: '400'
+  weight: '500'
 })
 
 export default function RootLayout({ children }) {
