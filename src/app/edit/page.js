@@ -77,13 +77,13 @@ export default function Page() {
         const newExampleSentencesAmount = exampleSentences.length / 6 + 1
 
         newExampleSentences.push(<label htmlFor={`example-sentence-english-${newExampleSentencesAmount}`}>Example Sentence {newExampleSentencesAmount} (English)</label>)
-        newExampleSentences.push(<textarea className='border-black border rounded' type='text' id={`example-sentence-english-${newExampleSentencesAmount}`} name={`example-sentence-english-${newExampleSentencesAmount}`}></textarea>)
+        newExampleSentences.push(<textarea required className='border-black border rounded' type='text' id={`example-sentence-english-${newExampleSentencesAmount}`} name={`example-sentence-english-${newExampleSentencesAmount}`}></textarea>)
 
         newExampleSentences.push(<label htmlFor={`example-sentence-conlang-${newExampleSentencesAmount}`}>Example Sentence {newExampleSentencesAmount} (Conlang)</label>)
-        newExampleSentences.push(<textarea className='border-black border rounded' type='text' id={`example-sentence-conlang-${newExampleSentencesAmount}`} name={`example-sentence-conlang-${newExampleSentencesAmount}`}></textarea>)
+        newExampleSentences.push(<textarea required className='border-black border rounded' type='text' id={`example-sentence-conlang-${newExampleSentencesAmount}`} name={`example-sentence-conlang-${newExampleSentencesAmount}`}></textarea>)
 
         newExampleSentences.push(<label htmlFor={`example-sentence-def-${newExampleSentencesAmount}`}>Which Definition Does This Sentence Correspond To?</label>)
-        newExampleSentences.push(<textarea className='border-black border rounded' type='text' id={`example-sentence-def-${newExampleSentencesAmount}`} name={`example-sentence-def-${newExampleSentencesAmount}`}></textarea>)
+        newExampleSentences.push(<textarea required className='border-black border rounded' type='text' id={`example-sentence-def-${newExampleSentencesAmount}`} name={`example-sentence-def-${newExampleSentencesAmount}`}></textarea>)
         setExampleSentences(exampleSentences.concat(newExampleSentences))
     }
 
