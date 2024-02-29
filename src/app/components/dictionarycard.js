@@ -31,8 +31,10 @@ export default function DictionaryCard({data}) {
 
     useEffect(()=>{
         let exampleSentences = {}
-        const regex = /[\w\s]+/g
+        //const regex = /[\w\s\']+[\,]*[\w\s\']+/g
+        const regex = /\w[\w\s\'\,]+|\d/g
         const sentences = data.example_sentences.match(regex)
+        // "{"(\"when you sleep, your eyes are closed\",\"taei pazalle emat wa\",1)","(\"No one staring at the sun can ignore it\",\"pwivu ynti nemali ni pa ja pazalle ni ynti okae wa\",2)"}"
         
         console.log("sentences", sentences)
 
@@ -93,10 +95,11 @@ export default function DictionaryCard({data}) {
         <div className="w-[30vw] h-auto border-[1px] rounded-2xl border-black p-6 gap-y-3 flex flex-col align-start text-xl">
             <h1 className={`text-5xl ${corgySemiboldItalic.className}`}>{data.word}</h1> 
             <div className="flex flex-row w-full"> 
-                <p>{`${verb_transitivity[data.verb_transitivity]}
+                <p>{word_type[data.word_type] == 'verb' ? `${verb_transitivity[data.verb_transitivity]}
                  ${verb_conjugation_pattern[data.verb_conjugation_pattern]}
                  ${word_type[data.word_type]}
-                 ${data.has_il_ael_contrast && word_type[data.word_type] == 'verb' ? 'w/ IAC' : 'w/o IAC'}`}</p>
+                 ${data.has_il_ael_contrast ? 'w/ IAC' : 'w/o IAC'}`:
+                 `${word_type[data.word_type]}`}</p>
             </div>
 
             <hr className='border-black border-t-[1px]'></hr>

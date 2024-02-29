@@ -9,6 +9,8 @@ export default function Page({params}) {
 
     useEffect(()=>{
         const search = params.search
+        const filters = params.filters
+        console.log("filters", filters)
         async function fetchData() {
             setLoading(true)
             const res = await fetch("http://localhost:3000/api/searchresults", {
@@ -16,7 +18,7 @@ export default function Page({params}) {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({search})
+                body: JSON.stringify({search, filters})
             })
             const result = await res.json()
             setSearchResults(result)
@@ -42,11 +44,17 @@ export default function Page({params}) {
         <>
             {!loading ?
                 searchResults.length > 0 ? 
-                    <div className="w-full h-auto flex flex-row justify-center items-start px-[20vw] gap-5 flex-wrap mt-20">
-                        {searchResults.map((result)=>{
-                            return <DictionaryCard data={result}></DictionaryCard>
-                            {/*Turn into two flex colums */}
-                        })}
+                    <div className="w-full h-auto flex flex-row justify-center items-start px-[10vw] gap-x-7 flex-wrap mt-20">
+                        <div className="w-[30vw] h-auto flex flex-col justify-start gap-5">
+                            {searchResults.map((result, index)=>{
+                                return index % 2 == 0 ? <DictionaryCard data={result}></DictionaryCard> : ''
+                            })}
+                        </div>
+                        <div className="w-[30vw] h-auto flex flex-col justify-start gap-5">
+                            {searchResults.map((result, index)=>{
+                                return index % 2 == 1 ? <DictionaryCard data={result}></DictionaryCard> : ''
+                            })}
+                        </div>
                     </div>
                     :
                     <p>no result</p>

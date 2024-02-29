@@ -100,15 +100,15 @@ function getQuery(formData) {
     //example_sentences
     
     if (exampleSentences.length > 0){
-            query = query.concat(`ARRAY[`)
-            for (let i = 0;i < exampleSentences.length; i+=3) {
+        query = query.concat(`ARRAY[`)
+        for (let i = 0;i < exampleSentences.length; i+=3) {
             query = query.concat(`('${exampleSentences[i]}', '${exampleSentences[i+1]}', ${exampleSentences[i+2]})::example_sentence_pair, `)
         }
         query = query.slice(0, -2)
         query = query.concat(']::example_sentence_pair[], ')
     }
     else {
-        query = query.concat(`ARRAY[''], `)
+        query = query.concat(`ARRAY[('', '', null)::example_sentence_pair]::example_sentence_pair[], `)//CHECK THAT THIS WORKS BURHUURHIURSJFKSEFIESKFNKJDSN
     }
     //grammatically_related_words
     if (grammaticallyRelatedWords.length > 0){

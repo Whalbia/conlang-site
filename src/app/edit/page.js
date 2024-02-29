@@ -225,8 +225,8 @@ export default function Page() {
                         <fieldset className="flex flex-col">
                             <p className="text-xl underline">Verb Transitivity</p>
                             <div>
-                                <input type="radio" name="verb-transitivity" id="not-verb-t" value="1"></input>
-                                <label htmlFor="not-verb-t">Not a Verb/Ambitransitive</label>
+                                <input type="radio" name="verb-transitivity" id="not-verb-t" value="1" required></input>
+                                <label htmlFor="not-verb-t">Not a Verb</label>
                             </div>
                             <div>
                                 <input type="radio" name="verb-transitivity" id="intransitive" value="2"></input>
@@ -236,12 +236,16 @@ export default function Page() {
                                 <input type="radio" name="verb-transitivity" id="transitive" value="3"></input>
                                 <label htmlFor="transitive">Transitive Verb</label>
                             </div>
+                            <div>
+                                <input type="radio" name="verb-transitivity" id="ambitransitive" value="4"></input>
+                                <label htmlFor="ambitransitive">Ambitransitive</label>
+                            </div>
                         </fieldset>
 
                         <fieldset className="flex flex-col">
                             <p className="text-xl underline">Word Type</p>
                             <div>
-                                <input type="radio" name="word-type" id="noun" value="1"></input>
+                                <input type="radio" name="word-type" id="noun" value="1" required></input>
                                 <label htmlFor="noun">Noun</label>
                             </div>
                             <div>
@@ -252,13 +256,33 @@ export default function Page() {
                                 <input type="radio" name="word-type" id="adjective" value="3"></input>
                                 <label htmlFor="adjective">Adjective</label>
                             </div>
+                            <div>
+                                <input type="radio" name="word-type" id="stative" value="4"></input>
+                                <label htmlFor="stative">Stative</label>
+                            </div>
+                            <div>
+                                <input type="radio" name="word-type" id="pronoun" value="5"></input>
+                                <label htmlFor="pronoun">Pronoun</label>
+                            </div>
+                            <div>
+                                <input type="radio" name="word-type" id="disc_part" value="6"></input>
+                                <label htmlFor="disc_part">Discourse Particle</label>
+                            </div>
+                            <div>
+                                <input type="radio" name="word-type" id="phrase" value="7"></input>
+                                <label htmlFor="phrase">Phrase</label>
+                            </div>
+                            <div>
+                                <input type="radio" name="word-type" id="misc" value="8"></input>
+                                <label htmlFor="misc">Miscellaneous</label>
+                            </div>
                         </fieldset>
 
                         <fieldset className="flex flex-col">
                             <p className="text-xl underline">Verb Conjugation Pattern</p>
                             <div>
-                                <input type="radio" name="conjugation-pattern" id="not-verb" value="1"></input>
-                                <label htmlFor="not-verb">Not a Verb/No Conjugation Pattern</label>
+                                <input type="radio" name="conjugation-pattern" id="not-verb" value="1" required></input>
+                                <label htmlFor="not-verb">Not a Verb</label>
                             </div>
                             <div>
                                 <input type="radio" name="conjugation-pattern" id="yt" value="2"></input>
@@ -267,6 +291,18 @@ export default function Page() {
                             <div>
                                 <input type="radio" name="conjugation-pattern" id="uk" value="3"></input>
                                 <label htmlFor="uk">-uk Verb</label>
+                            </div>
+                            <div>
+                                <input type="radio" name="conjugation-pattern" id="vu" value="4"></input>
+                                <label htmlFor="vu">-vu Verb</label>
+                            </div>
+                            <div>
+                                <input type="radio" name="conjugation-pattern" id="la" value="5"></input>
+                                <label htmlFor="la">-la Verb</label>
+                            </div>
+                            <div>
+                                <input type="radio" name="conjugation-pattern" id="misc_conj" value="6"></input>
+                                <label htmlFor="misc_conj">Miscellaneous</label>
                             </div>
                         </fieldset>
 
