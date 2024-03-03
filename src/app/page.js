@@ -32,7 +32,7 @@ export default function Page() {
                 <p className="text-2xl">Search In:</p>
 
                 <div className="flex flex-row items-center gap-x-1 text-lg">
-                  <input type="checkbox" id="words" name="words"></input>
+                  <input defaultChecked={true} type="checkbox" id="words" name="words"></input>
                   <label htmlFor="words">Words</label>
                 </div>
 
@@ -82,7 +82,7 @@ export default function Page() {
 
                   <div className="flex flex-row items-center gap-x-1">
                     <input type="checkbox" id="disc_part" name="disc_part"></input>
-                    <label htmlFor="disc_part">Adjective</label>
+                    <label htmlFor="disc_part">Discourse Particle</label>
                   </div>
 
                   <div className="flex flex-row items-center gap-x-1">

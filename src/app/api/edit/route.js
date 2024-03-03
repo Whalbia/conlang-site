@@ -108,7 +108,7 @@ function getQuery(formData) {
         query = query.concat(']::example_sentence_pair[], ')
     }
     else {
-        query = query.concat(`ARRAY[('', '', null)::example_sentence_pair]::example_sentence_pair[], `)//CHECK THAT THIS WORKS BURHUURHIURSJFKSEFIESKFNKJDSN
+        query = query.concat(`ARRAY[('', '', null)::example_sentence_pair]::example_sentence_pair[], `)
     }
     //grammatically_related_words
     if (grammaticallyRelatedWords.length > 0){
