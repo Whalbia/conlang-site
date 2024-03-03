@@ -133,6 +133,12 @@ export default function DictionaryCard({data}) {
                     <span className={corgySemibold.className}>Etymology:</span>
                     {data.etymology.map((word, index) => index == data.etymology.length-1 ? <span>{word}</span> : <span>{word},</span>)}
                 </div>
+
+                {/* Roots */}
+                <div className={`flex flex-row justify-start align-center flex-wrap gap-x-2 ${data.array_agg[0]!='' ? '' : 'hidden'}`}>
+                    <span className={corgySemibold.className}>Roots:</span>
+                    {data.array_agg.map((word, index) => index == data.array_agg.length-1 ? <span>{word}</span> : <span>{word},</span>)}
+                </div>
                 
                 {/* Grammatically Related Words */}
                 <div className={`flex flex-row justify-start align-center flex-wrap gap-x-2 ${data.grammatically_related_words[0]!='' ? '' : 'hidden'}`}>
