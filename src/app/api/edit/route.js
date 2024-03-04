@@ -2,15 +2,15 @@ import { NextResponse } from "next/server";
 
 function getQuery(formData) {
     //starting the query and concatentating based on the form data
-    let query=`INSERT INTO dictionary (word, definitions, word_type, alternate_forms, similar_words, verb_conjugation_pattern, has_il_ael_contrast, etymology, example_sentences, grammatically_related_words, grammar_notes, verb_transitivity) VALUES(`
+    let query=`INSERT INTO dictionary (word, definitions, word_type, alternate_forms, similar_words, verb_conjugation_pattern, has_il_ael_contrast, etymology, example_sentences, etymologically_related_words, usage_notes, verb_transitivity) VALUES(`
 
     let definitions = []
     let alternateForms = []
     let similarWords = []
     let etymology = []
     let exampleSentences = []
-    let grammaticallyRelatedWords = []
-    let grammarNotes = []
+    let etymologicallyRelatedWords = []
+    let usageNotes = []
     //CHANGE THIS TO GET ALL FUNCTIONS FROM FORM DATA BS THIS IS HELLA INEFFICIENT
     for (const key of formData.keys()){
         if (key.includes('definition')){
@@ -28,11 +28,11 @@ function getQuery(formData) {
         else if (key.includes('example-sentence')){
             exampleSentences.push(formData.get(key).replaceAll(`'`, `''`))
         }
-        else if (key.includes('grammatically-related-word')){
-            grammaticallyRelatedWords.push(formData.get(key).replaceAll(`'`, `''`))
+        else if (key.includes('etymologically-related-word')){
+            etymologicallyRelatedWords.push(formData.get(key).replaceAll(`'`, `''`))
         }
-        else if (key.includes('grammar-note')){
-            grammarNotes.push(formData.get(key).replaceAll(`'`, `''`))
+        else if (key.includes('usage-note')){
+            usageNotes.push(formData.get(key).replaceAll(`'`, `''`))
         }
     }
 
@@ -110,11 +110,11 @@ function getQuery(formData) {
     else {
         query = query.concat(`ARRAY[('', '', null)::example_sentence_pair]::example_sentence_pair[], `)
     }
-    //grammatically_related_words
-    if (grammaticallyRelatedWords.length > 0){
+    //etymologically_related_words
+    if (etymologicallyRelatedWords.length > 0){
         query = query.concat(`ARRAY[`)
-        for (let i = 0;i < grammaticallyRelatedWords.length; i++) {
-            query = query.concat(`'${grammaticallyRelatedWords[i]}', `)
+        for (let i = 0;i < etymologicallyRelatedWords.length; i++) {
+            query = query.concat(`'${etymologicallyRelatedWords[i]}', `)
         }
         query = query.slice(0, -2)
         query = query.concat('], ')
@@ -122,11 +122,11 @@ function getQuery(formData) {
     else {
         query = query.concat(`ARRAY[''], `)
     }
-    //grammar_notes
-    if (grammarNotes.length > 0){
+    //usage_notes
+    if (usageNotes.length > 0){
         query = query.concat(`ARRAY[`)
-        for (let i = 0;i < grammarNotes.length; i++) {
-            query = query.concat(`'${grammarNotes[i]}', `)
+        for (let i = 0;i < usageNotes.length; i++) {
+            query = query.concat(`'${usageNotes[i]}', `)
         }
         query = query.slice(0, -2)
         query = query.concat('], ')

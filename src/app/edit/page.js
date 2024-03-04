@@ -8,8 +8,8 @@ export default function Page() {
     let [similarWords, setSimilarWords] = useState([])
     let [etymology, setEtymology] = useState([])
     let [exampleSentences, setExampleSentences] = useState([])
-    let [grammaticallyRelatedWords, setGrammaticallyRelatedWords] = useState([])
-    let [grammarNotes, setGrammarNotes] = useState([])
+    let [etymologicallyRelatedWords, setEtymologicallyRelatedWords] = useState([])
+    let [usageNotes, setUsageNotes] = useState([])
     let [rootsAffixes, setRootsAffixes] = useState([])
     let [loading, setLoading] = useState(false)
 
@@ -87,25 +87,25 @@ export default function Page() {
         setExampleSentences(exampleSentences.concat(newExampleSentences))
     }
 
-    function addGrammaticallyRelatedWord(e) {
+    function addEtymologicallyRelatedWord(e) {
         e.preventDefault()
-        let newGrammaticallyRelatedWord = []
-        const newGrammaticallyRelatedWordAmount = grammaticallyRelatedWords.length / 2 + 1
+        let newEtymologicallyRelatedWord = []
+        const newEtymologicallyRelatedWordAmount = etymologicallyRelatedWords.length / 2 + 1
 
-        newGrammaticallyRelatedWord.push(<label htmlFor={`grammatically-related-word-${newGrammaticallyRelatedWordAmount}`}>Grammatically Related Word {newGrammaticallyRelatedWordAmount}</label>)
-        newGrammaticallyRelatedWord.push(<textarea className='border-black border rounded' type='text' id={`grammatically-related-word-${newGrammaticallyRelatedWordAmount}`} name={`grammatically-related-word-${newGrammaticallyRelatedWordAmount}`}></textarea>)
+        newEtymologicallyRelatedWord.push(<label htmlFor={`etymologically-related-word-${newEtymologicallyRelatedWordAmount}`}>Etymologically Related Word {newEtymologicallyRelatedWordAmount}</label>)
+        newEtymologicallyRelatedWord.push(<textarea className='border-black border rounded' type='text' id={`etymologically-related-word-${newEtymologicallyRelatedWordAmount}`} name={`etymologically-related-word-${newEtymologicallyRelatedWordAmount}`}></textarea>)
 
-        setGrammaticallyRelatedWords(grammaticallyRelatedWords.concat(newGrammaticallyRelatedWord))
+        setEtymologicallyRelatedWords(etymologicallyRelatedWords.concat(newEtymologicallyRelatedWord))
     }
 
-    function addGrammarNote(e) {
+    function addUsageNote(e) {
         e.preventDefault()
-        let newGrammarNote = []
-        const newGrammarNoteAmount = grammarNotes.length / 2 + 1
-        newGrammarNote.push(<label htmlFor={`grammar-note-${newGrammarNoteAmount}`}>Grammar Note {newGrammarNoteAmount}</label>)
-        newGrammarNote.push(<textarea className='border-black border rounded' type='text' id={`grammar-note-${newGrammarNoteAmount}`} name={`grammar-note-${newGrammarNoteAmount}`}></textarea>)
+        let newUsageNote = []
+        const newUsageNoteAmount = usageNotes.length / 2 + 1
+        newUsageNote.push(<label htmlFor={`usage-note-${newUsageNoteAmount}`}>Usage Note {newUsageNoteAmount}</label>)
+        newUsageNote.push(<textarea className='border-black border rounded' type='text' id={`usage-note-${newUsageNoteAmount}`} name={`usage-note-${newUsageNoteAmount}`}></textarea>)
 
-        setGrammarNotes(grammarNotes.concat(newGrammarNote))
+        setUsageNotes(usageNotes.concat(newUsageNote))
     }
 
     function addRootAffix(e) {
@@ -136,11 +136,11 @@ export default function Page() {
         else if (toRemove == "etymology"){
             setEtymology(etymology.slice(0, -2))
         }
-        else if (toRemove == "gram-word"){
-            setGrammaticallyRelatedWords(grammaticallyRelatedWords.slice(0, -2))
+        else if (toRemove == "ety-word"){
+            setEtymologicallyRelatedWords(etymologicallyRelatedWords.slice(0, -2))
         }
-        else if (toRemove == "gram-note"){
-            setGrammarNotes(grammarNotes.slice(0, -2))
+        else if (toRemove == "use-note"){
+            setUsageNotes(usageNotes.slice(0, -2))
         }
         else if (toRemove == "root-affix"){
             setRootsAffixes(rootsAffixes.slice(0, -2))
@@ -201,17 +201,17 @@ export default function Page() {
                     </div>
 
                     <div className="flex flex-col ">
-                        <p className="text-xl underline">Grammatically Related Words</p>
-                        {grammaticallyRelatedWords}
-                        <button className='hover:bg-slate-400 border-black border rounded w-56 mt-2' onClick={addGrammaticallyRelatedWord}>Add Grammatically Related Word</button>
-                        <button className='hover:bg-slate-400 border-black border rounded w-56 mt-2' onClick={remove} id="gram-word">Remove Last Item</button>
+                        <p className="text-xl underline">Etymologically Related Words</p>
+                        {etymologicallyRelatedWords}
+                        <button className='hover:bg-slate-400 border-black border rounded w-56 mt-2' onClick={addEtymologicallyRelatedWord}>Add Etymologically Related Word</button>
+                        <button className='hover:bg-slate-400 border-black border rounded w-56 mt-2' onClick={remove} id="ety-word">Remove Last Item</button>
                     </div>
 
                     <div className="flex flex-col ">
-                        <p className="text-xl underline">Grammar Notes</p>
-                        {grammarNotes}
-                        <button className='hover:bg-slate-400 border-black border rounded w-40 mt-2' onClick={addGrammarNote}>Add Grammar Note</button>
-                        <button className='hover:bg-slate-400 border-black border rounded w-40 mt-2' onClick={remove} id="gram-note">Remove Last Item</button>
+                        <p className="text-xl underline">Usage Notes</p>
+                        {usageNotes}
+                        <button className='hover:bg-slate-400 border-black border rounded w-40 mt-2' onClick={addUsageNote}>Add Usage Note</button>
+                        <button className='hover:bg-slate-400 border-black border rounded w-40 mt-2' onClick={remove} id="use-note">Remove Last Item</button>
                     </div>
 
                     <div className="flex flex-col ">
