@@ -34,6 +34,7 @@ function createQuery(searchData) {
         filters.includes('words') ? (search == 'all_results' ? '' : searchParams.push(` dictionary.word LIKE '%${search}%' `)) : ''
         filters.includes('definitions') ? (search == 'all_results' ? '' : searchParams.push(` array_to_string(dictionary.definitions, ',') LIKE '%${search}%' `)) : ''
         filters.includes('rootsAffixes') ? (search == 'all_results' ? '' : searchParams.push(` roots.root LIKE '%${search}%' `)) : ''
+        filters.includes('etymologically') ? (search == 'all_results' ? '' : searchParams.push(` array_to_string(dictionary.etymologically_related_words, ',') ~* '\\y${search}\\y' `)) : ''
 
         //Il Ael contrast
         filters.includes('ilAel') ? filterParams.push(' has_il_ael_contrast = true ') : ''

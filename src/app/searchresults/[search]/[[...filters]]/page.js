@@ -50,11 +50,13 @@ export default function Page({params}) {
                                 return index % 2 == 0 ? <DictionaryCard data={result}></DictionaryCard> : ''
                             })}
                         </div>
-                        <div className="w-[30vw] h-auto flex flex-col justify-start gap-5">
+                        {searchResults.length > 1 ? 
+                            <div className="w-[30vw] h-auto flex flex-col justify-start gap-5">
                             {searchResults.map((result, index)=>{
                                 return index % 2 == 1 ? <DictionaryCard data={result}></DictionaryCard> : ''
                             })}
                         </div>
+                        : ''}
                     </div>
                     :
                     <p>no result</p>

@@ -29,27 +29,34 @@ export default function DictionaryCard({data}) {
     const [expandedExamples, setExpandedExamples] = useState(false)
     const [exampleSentences, setExampleSentences] = useState({})
 
+    //setting stuff to alpha order
+    let similarWords = data.similar_words
+    similarWords.sort()
+    let etymologicallyRelatedWords = data.etymologically_related_words
+    etymologicallyRelatedWords.sort()
+    let roots = data.array_agg
+    roots.sort()
+
     useEffect(()=>{
-        let exampleSentences = {}
+        let exampleSentences = []
         //const regex = /[\w\s\']+[\,]*[\w\s\']+/g
-        const regex = /\w[\w\s\'\,]+|\d/g
-        const sentences = data.example_sentences.match(regex)
+        const sentenceRegex = /\w[\w\s\'\,\.\?\!\-()%/]+/g
+        const sentences = data.example_sentences.match(sentenceRegex)
         // "{"(\"when you sleep, your eyes are closed\",\"taei pazalle emat wa\",1)","(\"No one staring at the sun can ignore it\",\"pwivu ynti nemali ni pa ja pazalle ni ynti okae wa\",2)"}"
         
         console.log("sentences", sentences)
 
 
         for (let i = 2;i < sentences.length ; i+=3) {
-            let number = sentences[i]
+            let number = sentences[i].slice(0, 1)
             let sentenceEnglish = sentences[i-2]
             let sentenceConlang = sentences[i-1]
-            let temp = {
-                [number] : {
+            let temp =
+                {
                     'engSentence' : sentenceEnglish,
                     'conlangSentence' : sentenceConlang
                 }
-            }
-            exampleSentences = Object.assign(exampleSentences, temp)
+            exampleSentences.hasOwnProperty(number) ? exampleSentences[number].push(temp) : exampleSentences[number] = [temp]
         }
 
         setExampleSentences(exampleSentences)
@@ -108,16 +115,19 @@ export default function DictionaryCard({data}) {
                 {data.definitions.map((definition, index) => { 
                     return <ul className='list-inside'>
                                 <li>{index+1}. {definition}</li>{expandedExamples && exampleSentences.hasOwnProperty(index+1) ? 
-                                <li className='list-disc text-xs ml-8'><span className={`text-lg ${corgySemiboldItalic.className}`}>{exampleSentences[index+1].engSentence}</span><p className='text-lg ml-4'>{exampleSentences[index+1].conlangSentence}</p></li> : ''}
+                                exampleSentences[index+1].map((object) => {
+                                    return <li className='list-disc text-xs ml-8'><span className={`text-lg ${corgySemiboldItalic.className}`}>{object.conlangSentence}</span><p className='text-lg ml-4'>{object.engSentence}</p></li>
+                                })
+                                 : ''}
                             </ul>
                 })}
 
             { expanded ?  
             <>
                 {/* Similar Words */}
-                <div className={`flex flex-row justify-start align-center flex-wrap gap-x-2 ${data.similar_words[0]!='' ? '' : 'hidden'}`}>
+                <div className={`flex flex-row justify-start align-center flex-wrap gap-x-2 ${similarWords[0]!='' ? '' : 'hidden'}`}>
                     <span className={corgySemibold.className}>Similar to:</span>
-                    {data.similar_words.map((word, index) => index == data.similar_words.length-1 ? <span>{word}</span> : <span>{word},</span>)}
+                    {similarWords.map((word, index) => index == similarWords.length-1 ? <span>{word}</span> : <span>{word},</span>)}
                 </div>
                 
                 {/* Alternate Forms */}
@@ -126,7 +136,7 @@ export default function DictionaryCard({data}) {
                     {data.alternate_forms.map((word, index) => index == data.alternate_forms.length-1 ? <span>{word}</span> : <span>{word},</span>)}
                 </div>
 
-                <hr className={`border-black border-t-[1px]  ${data.alternate_forms[0]=='' && data.similar_words[0]=='' ? 'hidden' : ''}`}></hr>
+                <hr className={`border-black border-t-[1px]  ${data.etymology[0]=='' && data.array_agg[0]=='' && data.etymologically_related_words[0]=='' ? 'hidden' : ''}`}></hr>
 
                 {/* Etymology */}
                 <div className={`flex flex-row justify-start align-center flex-wrap gap-x-2 ${data.etymology[0]!='' ? '' : 'hidden'}`}>
@@ -135,15 +145,15 @@ export default function DictionaryCard({data}) {
                 </div>
 
                 {/* Roots */}
-                <div className={`flex flex-row justify-start align-center flex-wrap gap-x-2 ${data.array_agg[0]!='' ? '' : 'hidden'}`}>
+                <div className={`flex flex-row justify-start align-center flex-wrap gap-x-2 ${roots[0]!='' ? '' : 'hidden'}`}>
                     <span className={corgySemibold.className}>Roots:</span>
-                    {data.array_agg.map((word, index) => index == data.array_agg.length-1 ? <span>{word}</span> : <span>{word},</span>)}
+                    {roots.map((word, index) => index == roots.length-1 ? <span>{word}</span> : <span>{word},</span>)}
                 </div>
                 
                 {/* Etymologically Related Words */}
-                <div className={`flex flex-row justify-start align-center flex-wrap gap-x-2 ${data.etymologically_related_words[0]!='' ? '' : 'hidden'}`}>
+                <div className={`flex flex-row justify-start align-center flex-wrap gap-x-2 ${etymologicallyRelatedWords[0]!='' ? '' : 'hidden'}`}>
                     <span className={corgySemibold.className}>Etymologically-related words:</span>
-                    {data.etymologically_related_words.map((word, index) => index == data.etymologically_related_words.length-1 ? <span>{word}</span> : <span>{word},</span>)}
+                    {etymologicallyRelatedWords.map((word, index) => index == etymologicallyRelatedWords.length-1 ? <span>{word}</span> : <span>{word},</span>)}
                 </div>
 
                 <hr className='border-black border-t-[1px]'></hr>

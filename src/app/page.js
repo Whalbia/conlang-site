@@ -28,7 +28,7 @@ export default function Page() {
             </div>
 
             <div className="flex flex-row w-2/5 h-[35vh] rounded-lg border-black border-[1px]">
-              <div className="flex flex-col items-start justify-start gap-y-3 p-5 border-black border-r-[1px] w-1/4">
+              <div className="flex flex-col items-start justify-start gap-y-3 p-4 border-black border-r-[1px] w-1/4">
                 <p className="text-2xl">Search In:</p>
 
                 <div className="flex flex-row items-center gap-x-1 text-lg">
@@ -44,6 +44,11 @@ export default function Page() {
                 <div className="flex flex-row items-center gap-x-1 text-lg">
                   <input type="checkbox" id="rootsAffixes" name="rootsAffixes"></input>
                   <label htmlFor="rootsAffixes">Roots/Affixes</label>
+                </div>
+
+                <div className="flex flex-row items-center gap-x-1 text-lg">
+                  <input type="checkbox" id="etymologically" name="etymologically"></input>
+                  <label htmlFor="etymologically" className="block leading-tight">Etymologically Related Words</label>
                 </div>
               </div>
               <div className="flex flex-col items-start justify-start gap-y-3 p-5 w-3/4">
