@@ -2,6 +2,8 @@
 import { useState } from 'react'
 import { useEffect } from 'react'
 
+import EditButton from './editbutton'
+
 import { Cormorant_Garamond } from 'next/font/google'
 
 const corgySemibold = Cormorant_Garamond({
@@ -107,6 +109,7 @@ export default function DictionaryCard({data}) {
                  ${word_type[data.word_type]}
                  ${data.has_il_ael_contrast ? 'w/ IAC' : 'w/o IAC'}`:
                  `${word_type[data.word_type]}`}</p>
+                 <EditButton wordID={data.word_id}></EditButton>
             </div>
 
             <hr className='border-black border-t-[1px]'></hr>

@@ -1,8 +1,9 @@
 'use client'
 
 import { useState } from "react"
+import { useEffect } from "react"
 
-export default function Page() {
+export default function Page({params}) {
     let [definitions, setDefinitions] = useState([])
     let [alternateForms, setAlternateForms] = useState([])
     let [similarWords, setSimilarWords] = useState([])
@@ -27,15 +28,52 @@ export default function Page() {
         //location.reload()
     }
 
-    function addDefinition(e) {
-        e.preventDefault()
+    function populatePage(result) {
+        if ('definition' in result){
+            addDefinition(null, result.definition)
+        }
+    }
+
+    //fetch the word
+    useEffect(()=>{
+        if ('wordid' in params) {
+            const wordID = params.wordid
+            async function fetchData() {
+                // const res = await fetch("http://localhost:3000/api/editword", {
+                //     method: "POST",
+                //     headers: {
+                //         "Content-Type": "application/json"
+                //     },
+                //     body: JSON.stringify({wordID})
+                // })
+                // const result = await res.json()
+                populatePage({definition: ["def 1", "def2"]})
+            }
+            fetchData()
+        }
+    }, [])
+
+    function addDefinition(e, data) {
+        if (e){
+            e.preventDefault()
+        }
         let newDefinitions = []
         const newDefinitionAmount = definitions.length / 2 + 1
 
         newDefinitions.push(<label htmlFor={`definition-${newDefinitionAmount}`}>Definition {newDefinitionAmount}</label>)
-        newDefinitions.push(<textarea className='border-black border rounded' type='text' id={`definition-${newDefinitionAmount}`} name={`definition-${newDefinitionAmount}`}></textarea>)
+        data ? '' : newDefinitions.push(<textarea className='border-black border rounded' type='text' id={`definition-${newDefinitionAmount}`} name={`definition-${newDefinitionAmount}`}></textarea>)
 
+        if (data){
+            for (let text of data){
+                newDefinitions.push(<textarea className='border-black border rounded' type='text' id={`definition-${newDefinitionAmount}`} name={`definition-${newDefinitionAmount}`} value={text}></textarea>)
+            }
+        }
         setDefinitions(definitions.concat(newDefinitions))
+
+        if (text){
+            setId(`definition-${newDefinitionAmount}`)
+            setText(text) 
+        }
     }
 
     function addAlternateForm(e) {
