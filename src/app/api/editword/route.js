@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 function getQuery(formData) {
     //starting the query and concatentating based on the form data
-    let query=`INSERT INTO dictionary (word, definitions, word_type, alternate_forms, similar_words, verb_conjugation_pattern, has_il_ael_contrast, etymology, example_sentences, etymologically_related_words, usage_notes, verb_transitivity) VALUES(`
+    let query=`UPDATE dictionary SET `
 
     let definitions = []
     let alternateForms = []
@@ -37,107 +37,85 @@ function getQuery(formData) {
     }
 
     //word
-    query = query.concat(`'${formData.get('word')}', `)
+    query = query.concat(`word = '${formData.get('word')}', `)
     //definitions
     if (definitions.length > 0){
-        query = query.concat(`ARRAY[`)
+        query = query.concat(`definitions = ARRAY[`)
         for (let i = 0;i < definitions.length; i++) {
             query = query.concat(`'${definitions[i]}', `)
         }
         query = query.slice(0, -2)
         query = query.concat('], ')
     }
-    else {
-        query = query.concat(`ARRAY[''], `)
-    }
     //word type
-    query = query.concat(`${formData.get('word-type')}, `)
+    query = query.concat(`word_type = ${formData.get('word-type')}, `)
     //alternate forms
     if (alternateForms.length > 0){
-        query = query.concat(`ARRAY[`)
+        query = query.concat(`alternate_forms = ARRAY[`)
         for (let i = 0;i < alternateForms.length; i++) {
             query = query.concat(`'${alternateForms[i]}', `)
         }
         query = query.slice(0, -2)
         query = query.concat('], ')
     }
-    else {
-        query = query.concat(`ARRAY[''], `)
-    }
     //similar_words
     if (similarWords.length > 0){
-        query = query.concat(`ARRAY[`)
+        query = query.concat(`similar_words = ARRAY[`)
         for (let i = 0;i < similarWords.length; i++) {
             query = query.concat(`'${similarWords[i]}', `)
         }
         query = query.slice(0, -2)
         query = query.concat('], ')
     }
-    else {
-        query = query.concat(`ARRAY[''], `)
-    }
     //conjugation pattern
-    query = query.concat(`${formData.get('conjugation-pattern')}, `)
+    query = query.concat(`verb_conjugation_pattern = ${formData.get('conjugation-pattern')}, `)
     //il/ael contrast
     if (formData.get('has-il-ael-contrast')) {
-        query = query.concat('true, ')
+        query = query.concat('has_il_ael_contrast = true, ')
     }
     else {
-        query = query.concat('false, ')
+        query = query.concat('has_il_ael_contrast = false, ')
     }
     //etymology
     if (etymology.length > 0){
-        query = query.concat(`ARRAY[`)
+        query = query.concat(`etymology = ARRAY[`)
         for (let i = 0;i < etymology.length; i++) {
             query = query.concat(`'${etymology[i]}', `)
         }
         query = query.slice(0, -2)
         query = query.concat('], ')
     }
-    else {
-        query = query.concat(`ARRAY[''], `)
-    }
     //example_sentences
-    
     if (exampleSentences.length > 0){
-        query = query.concat(`ARRAY[`)
+        query = query.concat(`example_sentences = ARRAY[`)
         for (let i = 0;i < exampleSentences.length; i+=3) {
             query = query.concat(`('${exampleSentences[i]}', '${exampleSentences[i+1]}', ${exampleSentences[i+2]})::example_sentence_pair, `)
         }
         query = query.slice(0, -2)
         query = query.concat(']::example_sentence_pair[], ')
     }
-    else {
-        query = query.concat(`ARRAY[('', '', null)::example_sentence_pair]::example_sentence_pair[], `)
-    }
     //etymologically_related_words
     if (etymologicallyRelatedWords.length > 0){
-        query = query.concat(`ARRAY[`)
+        query = query.concat(`etymologically_related_words = ARRAY[`)
         for (let i = 0;i < etymologicallyRelatedWords.length; i++) {
             query = query.concat(`'${etymologicallyRelatedWords[i]}', `)
         }
         query = query.slice(0, -2)
         query = query.concat('], ')
     }
-    else {
-        query = query.concat(`ARRAY[''], `)
-    }
     //usage_notes
     if (usageNotes.length > 0){
-        query = query.concat(`ARRAY[`)
+        query = query.concat(`usage_notes = ARRAY[`)
         for (let i = 0;i < usageNotes.length; i++) {
             query = query.concat(`'${usageNotes[i]}', `)
         }
         query = query.slice(0, -2)
         query = query.concat('], ')
     }
-    else {
-        query = query.concat(`ARRAY[''], `)
-    }
     //verb_transitivity
-    query = query.concat(`${formData.get('verb-transitivity')}) `)
+    query = query.concat(`verb_transitivity = ${formData.get('verb-transitivity')} `)
 
-    query = query.concat('RETURNING word_id;')
+    query = query.concat(`WHERE word_id = ${formData.get('wordid')};`)
     return query
 }
 
@@ -189,6 +167,7 @@ async function insertRoot(rootsAffixes, client) {
 }
 
 async function insertWordRootIds(wordId, rootIds, client) {
+    // insert the root ids that are left over after removing duplicates
     let query = `INSERT INTO words_roots (word_id, root_id) VALUES `
 
     for (let i = 0;i < rootIds.length;i++){
@@ -205,6 +184,26 @@ async function insertWordRootIds(wordId, rootIds, client) {
     return res
 }
 
+async function removeRootDuplicates(wordId, rootIds, client) {
+    // get all the root ids for the word
+    let query = `SELECT array_agg(roots.root_id) FROM words_roots JOIN dictionary ON words_roots.word_id = dictionary.word_id JOIN roots ON words_roots.root_id = roots.root_id WHERE dictionary.word_id = ${wordId}`
+    console.log('getting rood ids')
+    console.log(query)
+    const res = await client.query(query)
+    console.log('roots obtained')
+    console.log(res.rows)
+
+    // in js, remove the root ids that already exist
+    // for (let rootId of rootsRes){
+    //     index = rootIds.indexOf(rootId)
+    //     if (index >= 0){
+    //         rootIds.splice(index, 1)
+    //     }
+    // }
+
+    return rootIds
+}
+
 export async function POST(request) {
     console.log("request received")
     const formData = await request.formData()
@@ -218,25 +217,24 @@ export async function POST(request) {
     
     var client = new pg.Client(conString);
     await client.connect();
-    const result = await client.query(query)
-    const word_id = result.rows[0].word_id
-    //MAKE THIS ACTUALLY WORK IDK WHY TF THIS USED TO WORK OR WHY I THOUGHT IT WAS A GOOD IDEA
+    // const result = await client.query(query)
+    // const word_id = result.rows[0].word_id
     const rootsAffixes = formData.getAll('roots-affixes')
-    const rootsAff = formData.get('roots-affixes')
-    console.log(rootsAffixes)
-    console.log(rootsAff)
-    
     rootsAffixes.map((item) => item.replaceAll(`'`, `''`))
     if (rootsAffixes.length > 0) {
         console.log('Roots Affixes', rootsAffixes)
         console.log("insert root starting")
-        const root_ids = await insertRoot(rootsAffixes, client)
+        let root_ids = await insertRoot(rootsAffixes, client)
         console.log("roots inserted successfully")
         console.log(root_ids)
-        
-        const res = await insertWordRootIds(word_id, root_ids, client)
+
+        const word_id = formData.get('wordid')
+        root_ids = await removeRootDuplicates(word_id, root_ids, client)
+        //    if (root_ids.length() > 0){
+        //         const res = await insertWordRootIds(word_id, root_ids, client)
+        //    }
     }
     await client.end()
 
-    return NextResponse.json(result);
+    return NextResponse.json(root_ids);
 }

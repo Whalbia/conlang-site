@@ -9,6 +9,6 @@ export default function EditButton({wordID}){
     }
 
     return (
-        <button onClick={handleClick}>click me</button>
+        <button onClick={handleClick} className="border-black border-[1px] rounded-lg w-2/5 hover:bg-slate-300">Edit Word</button>
     )
 }
