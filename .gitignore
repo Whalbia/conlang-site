@@ -37,3 +37,8 @@ next-env.d.ts
 
 # reference docs
 /reference
+
+# seed data
+/src/db/seed-data*.json
+/src/db/seed.js
+/src/db/rebuild-seed.js
