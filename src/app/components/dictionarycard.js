@@ -1,30 +1,5 @@
 "use client"
-import { useState } from 'react'
-import { useEffect } from 'react'
-
-import EditButton from './editbutton'
-
-import { Cormorant_Garamond } from 'next/font/google'
-
-const corgySemibold = Cormorant_Garamond({
-    subsets: ['latin'],
-    display: 'swap',
-    weight: '600'
-})
-
-const corgySemiboldItalic = Cormorant_Garamond({
-    subsets: ['latin'],
-    display: 'swap',
-    weight: '600',
-    style: 'italic'
-})
-
-const corgyMediumItalic = Cormorant_Garamond({
-    subsets: ['latin'],
-    display: 'swap',
-    weight: '500',
-    style: 'italic'
-})
+import { useState, useEffect } from 'react'
 
 export default function DictionaryCard({data}) {
     const [expanded, setExpanded] = useState(false)
@@ -40,138 +15,124 @@ export default function DictionaryCard({data}) {
     let affixes = [...(data.affixes || [])]
     affixes.sort()
 
-    useEffect(()=>{
-        // example sentences are now JSON objects: {english, conlang, definitionNumber}
+    const hasExamples = (data.exampleSentences || []).length > 0
+    const hasExpandedContent = similarWords.length > 0 ||
+        (data.alternateForms || []).length > 0 ||
+        (data.etymology || []).length > 0 ||
+        roots.length > 0 ||
+        affixes.length > 0 ||
+        etymologicallyRelatedWords.length > 0 ||
+        (data.usageNotes || []).length > 0
+
+    useEffect(() => {
         let grouped = {}
         const sentences = data.exampleSentences || []
-
         for (const sentence of sentences) {
             const num = sentence.definitionNumber
-            const temp = {
-                engSentence: sentence.english,
-                conlangSentence: sentence.conlang
-            }
+            const temp = { engSentence: sentence.english, conlangSentence: sentence.conlang }
             grouped.hasOwnProperty(num) ? grouped[num].push(temp) : grouped[num] = [temp]
         }
-
         setExampleSentences(grouped)
     }, [])
 
-    const handleClickExamples = (e) => {
-        e.preventDefault()
-        expandedExamples ? setExpandedExamples(false) : setExpandedExamples(true)
-    }
-
-    const handleClickShowMore = (e) => {
-        e.preventDefault()
-        expanded ? setExpanded(false) : setExpanded(true)
-    }
-
     const word_type = {
-        '1': 'noun',
-        '2': 'verb',
-        '3': 'adjective',
-        '4': 'stative',
-        '5': 'pronoun',
-        '6': 'discourse particle',
-        '7': 'phrase',
-        '8': 'misc.'
+        '1': 'noun', '2': 'verb', '3': 'adjective', '4': 'stative',
+        '5': 'pronoun', '6': 'discourse particle', '7': 'phrase', '8': 'misc.'
     }
     const verb_conjugation_pattern = {
-        '2': '-yt',
-        '3': '-uk',
-        '4': '-vu',
-        '5': '-la',
-        '6': 'misc'
+        '2': '-yt', '3': '-uk', '4': '-vu', '5': '-la', '6': 'misc'
     }
     const verb_transitivity = {
-        '2': 'intransitive',
-        '3': 'transitive',
-        '4': 'ambitransitive'
+        '2': 'intransitive', '3': 'transitive', '4': 'ambitransitive'
+    }
+
+    const wordTypeStr = word_type[data.wordType] === 'verb'
+        ? `${verb_transitivity[data.verbTransitivity]} ${verb_conjugation_pattern[data.verbConjugationPattern]} verb${data.hasIlAelContrast ? ' w/ IAC' : ''}`
+        : word_type[data.wordType]
+
+    function MetadataRow({ label, items }) {
+        if (!items || items.length === 0) return null
+        return (
+            <div className="flex flex-row flex-wrap gap-x-1.5 items-start text-sm">
+                <span className="font-semibold text-[#1A1A1A]">{label}</span>
+                <span className="text-[#666]">{items.join(', ')}</span>
+            </div>
+        )
     }
 
     return (
-        <div className="w-[30vw] h-auto border-[1px] rounded-2xl border-black p-6 gap-y-3 flex flex-col align-start text-xl">
-            <h1 className={`text-5xl ${corgySemiboldItalic.className}`}>{data.word}</h1>
-            <EditButton wordID={data.wordId}></EditButton>
-            <div className="flex flex-row w-full">
-                <p>{word_type[data.wordType] == 'verb' ? `${verb_transitivity[data.verbTransitivity]}
-                 ${verb_conjugation_pattern[data.verbConjugationPattern]}
-                 ${word_type[data.wordType]}
-                 ${data.hasIlAelContrast ? 'w/ IAC' : 'w/o IAC'}`:
-                 `${word_type[data.wordType]}`}</p>
+        <div className="w-full h-auto border border-[#E8E2DA] rounded-2xl bg-white p-5 sm:p-7 gap-y-2 flex flex-col text-base">
+            {/* Word Title */}
+            <h2 className="text-3xl sm:text-4xl font-semibold italic text-[#2A3441] tracking-tight leading-tight">
+                {data.word}
+            </h2>
+
+            {/* Word Type */}
+            <p className="text-sm italic text-[#999] mb-1">{wordTypeStr}</p>
+
+            {/* Divider */}
+            <hr className="border-[#E8E2DA] mb-1" />
+
+            {/* Definitions with inline examples */}
+            {data.definitions.map((definition, index) => (
+                <div key={index}>
+                    <div className="flex gap-2 items-start">
+                        <span className="font-semibold text-[#1A1A1A] text-[17px]">{index + 1}.</span>
+                        <span className="text-[#333] text-[17px] leading-[1.45]">{definition}</span>
+                    </div>
+                    {expandedExamples && exampleSentences.hasOwnProperty(index + 1) &&
+                        exampleSentences[index + 1].map((obj, i) => (
+                            <div key={i} className="pl-6 sm:pl-8 mt-1 mb-1">
+                                <p className="text-[15px] font-semibold italic text-[#555]">{obj.conlangSentence}</p>
+                                <p className="text-sm text-[#888]">{obj.engSentence}</p>
+                            </div>
+                        ))
+                    }
+                </div>
+            ))}
+
+            {/* Expanded Content */}
+            {expanded && (
+                <>
+                    <MetadataRow label="Similar to" items={similarWords} />
+                    <MetadataRow label="Alternate forms" items={data.alternateForms} />
+
+                    {((data.etymology || []).length > 0 || roots.length > 0 || affixes.length > 0 || etymologicallyRelatedWords.length > 0) && (
+                        <hr className="border-[#E8E2DA] my-1" />
+                    )}
+
+                    <MetadataRow label="Etymology" items={data.etymology} />
+                    <MetadataRow label="Roots" items={roots} />
+                    <MetadataRow label="Affixes" items={affixes} />
+                    <MetadataRow label="Related words" items={etymologicallyRelatedWords} />
+
+                    {(data.usageNotes || []).length > 0 && (
+                        <hr className="border-[#E8E2DA] my-1" />
+                    )}
+
+                    <MetadataRow label="Usage" items={data.usageNotes} />
+                </>
+            )}
+
+            {/* Footer Links */}
+            <div className="flex gap-5 pt-2">
+                {hasExamples && (
+                    <span
+                        className="text-sm text-[#999] cursor-pointer hover:text-[#666] transition-colors"
+                        onClick={() => setExpandedExamples(!expandedExamples)}
+                    >
+                        {expandedExamples ? 'Hide examples' : 'Examples'}
+                    </span>
+                )}
+                {hasExpandedContent && (
+                    <span
+                        className="text-sm text-[#999] cursor-pointer hover:text-[#666] transition-colors"
+                        onClick={() => setExpanded(!expanded)}
+                    >
+                        {expanded ? '← Less' : 'More details →'}
+                    </span>
+                )}
             </div>
-
-            <hr className='border-black border-t-[1px]'></hr>
-
-            <button className='w-2/5 border-black border-[1px] rounded-xl hover:bg-slate-300' onClick={handleClickExamples}>{expandedExamples ? 'Hide Examples' : 'Show Examples'}</button>
-                {data.definitions.map((definition, index) => {
-                    return <ul key={index} className='list-inside'>
-                                <li>{index+1}. {definition}</li>{expandedExamples && exampleSentences.hasOwnProperty(index+1) ?
-                                exampleSentences[index+1].map((object, i) => {
-                                    return <li key={i} className='list-disc text-xs ml-8'><span className={`text-lg ${corgySemiboldItalic.className}`}>{object.conlangSentence}</span><p className='text-lg ml-4'>{object.engSentence}</p></li>
-                                })
-                                 : ''}
-                            </ul>
-                })}
-
-            { expanded ?
-            <>
-                {/* Similar Words */}
-                <div className={`flex flex-row justify-start align-center flex-wrap gap-x-2 ${similarWords.length > 0 ? '' : 'hidden'}`}>
-                    <span className={corgySemibold.className}>Similar to:</span>
-                    {similarWords.map((word, index) => index == similarWords.length-1 ? <span key={index}>{word}</span> : <span key={index}>{word},</span>)}
-                </div>
-
-                {/* Alternate Forms */}
-                <div className={`flex flex-row justify-start align-center flex-wrap gap-x-2 ${(data.alternateForms || []).length > 0 ? '' : 'hidden'}`}>
-                    <span className={corgySemibold.className}>Alternate forms:</span>
-                    {(data.alternateForms || []).map((word, index) => index == data.alternateForms.length-1 ? <span key={index}>{word}</span> : <span key={index}>{word},</span>)}
-                </div>
-
-                <hr className={`border-black border-t-[1px] ${(data.etymology || []).length === 0 && roots.length === 0 && affixes.length === 0 && etymologicallyRelatedWords.length === 0 ? 'hidden' : ''}`}></hr>
-
-                {/* Etymology */}
-                <div className={`flex flex-row justify-start align-center flex-wrap gap-x-2 ${(data.etymology || []).length > 0 ? '' : 'hidden'}`}>
-                    <span className={corgySemibold.className}>Etymology:</span>
-                    {(data.etymology || []).map((word, index) => index == data.etymology.length-1 ? <span key={index}>{word}</span> : <span key={index}>{word},</span>)}
-                </div>
-
-                {/* Roots */}
-                <div className={`flex flex-row justify-start align-center flex-wrap gap-x-2 ${roots.length > 0 ? '' : 'hidden'}`}>
-                    <span className={corgySemibold.className}>Roots:</span>
-                    {roots.map((word, index) => index == roots.length-1 ? <span key={index}>{word}</span> : <span key={index}>{word},</span>)}
-                </div>
-
-                {/* Affixes */}
-                <div className={`flex flex-row justify-start align-center flex-wrap gap-x-2 ${affixes.length > 0 ? '' : 'hidden'}`}>
-                    <span className={corgySemibold.className}>Affixes:</span>
-                    {affixes.map((word, index) => index == affixes.length-1 ? <span key={index}>{word}</span> : <span key={index}>{word},</span>)}
-                </div>
-
-                {/* Etymologically Related Words */}
-                <div className={`flex flex-row justify-start align-center flex-wrap gap-x-2 ${etymologicallyRelatedWords.length > 0 ? '' : 'hidden'}`}>
-                    <span className={corgySemibold.className}>Etymologically-related words:</span>
-                    {etymologicallyRelatedWords.map((word, index) => index == etymologicallyRelatedWords.length-1 ? <span key={index}>{word}</span> : <span key={index}>{word},</span>)}
-                </div>
-
-                <hr className='border-black border-t-[1px]'></hr>
-
-                {/* Usage Notes */}
-                <div className={`flex flex-row justify-start align-center flex-wrap gap-x-2 ${(data.usageNotes || []).length > 0 ? '' : 'hidden'}`}>
-                    <span className={corgySemibold.className}>Notes on usage:</span>
-                    {(data.usageNotes || []).map((word, index) => index == data.usageNotes.length-1 ? <span key={index}>{word}</span> : <span key={index}>{word},</span>)}
-                </div>
-            </>
-            :
-            ''
-            }
-            <button className={expanded ? '-mb-4':''} onClick={handleClickShowMore}>
-            {expanded ?
-            <><p>Less</p><p className='text-5xl'>^</p></>
-            : <><p>Show More</p><p className='text-5xl transform rotate-180 -mt-4'>^</p></> }
-            </button>
-
         </div>
-    );
+    )
 }

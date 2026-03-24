@@ -4,6 +4,10 @@ import { useState } from "react"
 import { useEffect } from "react"
 
 export default function Page({params}) {
+    let [authenticated, setAuthenticated] = useState(false)
+    let [authChecked, setAuthChecked] = useState(false)
+    let [passwordInput, setPasswordInput] = useState('')
+    let [authError, setAuthError] = useState('')
     let [definitions, setDefinitions] = useState([])
     let [alternateForms, setAlternateForms] = useState([])
     let [similarWords, setSimilarWords] = useState([])
@@ -14,6 +18,28 @@ export default function Page({params}) {
     let [rootsAffixes, setRootsAffixes] = useState([])
     let [loading, setLoading] = useState(false)
     let [data, setData] = useState(null)
+
+    useEffect(() => {
+        fetch('/api/auth').then(res => {
+            if (res.ok) setAuthenticated(true)
+            setAuthChecked(true)
+        }).catch(() => setAuthChecked(true))
+    }, [])
+
+    async function handleAuth(e) {
+        e.preventDefault()
+        setAuthError('')
+        const res = await fetch('/api/auth', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password: passwordInput })
+        })
+        if (res.ok) {
+            setAuthenticated(true)
+        } else {
+            setAuthError('Wrong password')
+        }
+    }
 
     let stateVariables = {
         'definitions': [definitions, setDefinitions],
@@ -244,12 +270,31 @@ export default function Page({params}) {
     }
 
 
+    if (!authChecked) return <div className="w-screen h-screen flex items-center justify-center"><p className="text-xl text-[#888]">Loading...</p></div>
+
+    if (!authenticated) return (
+        <div className="w-screen h-screen flex items-center justify-center bg-[#FAFAF8]">
+            <form onSubmit={handleAuth} className="flex flex-col items-center gap-4">
+                <p className="text-2xl font-semibold italic" style={{fontFamily: 'Cormorant Garamond'}}>Kagetw Editor</p>
+                <input
+                    type="password"
+                    value={passwordInput}
+                    onChange={e => setPasswordInput(e.target.value)}
+                    placeholder="Password"
+                    className="border border-[#D5CEC6] rounded px-4 py-2 w-64 focus:outline-none focus:border-[#C4725A]"
+                />
+                {authError && <p className="text-sm text-red-500">{authError}</p>}
+                <button type="submit" className="border border-[#D5CEC6] rounded px-6 py-2 hover:bg-[#F0EBE5] transition-colors">Enter</button>
+            </form>
+        </div>
+    )
+
     return (
         <div className="overflow-hidden">
             {
                 loading ?
                 <div className="w-screen h-screen flex flex-row items-center justify-center">
-                    <p className="text-2xl">loading... (I was too lazy to make a loading animation so I'm just putting in words lmao)</p>
+                    <p className="text-2xl">Loading...</p>
                 </div>
                 :
             <main className="flex flex-col items-center justify-start w-screen min-h-screen">

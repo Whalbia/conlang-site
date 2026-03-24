@@ -42,3 +42,7 @@ next-env.d.ts
 /src/db/seed-data*.json
 /src/db/seed.js
 /src/db/rebuild-seed.js
+
+# data processing scripts and artifacts
+/scripts/
+/import-report.txt
